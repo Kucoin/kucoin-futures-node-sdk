@@ -14,18 +14,7 @@ export default class Strategy {
         const {
             instanceServers, token
         } = server;
-        //"".concat(instanceServers[0].endpoint, "?token=").concat(encodeURIComponent(token), "&format=json&acceptUserMessage=true&connectId=connect_welcome"),
         const url = `${instanceServers[0].endpoint}?token=${token}&acceptUserMessage=true&connectId=${connectId}`;
-        // const client = io('wss://push1-v2.kucoin.com/', {
-        //     path:'/endpoint',
-        //     query: {
-        //         token: encodeURIComponent(token),
-        //         acceptUserMessage: true,
-        //         connectId,
-        //     },
-        //     transports: ['websocket'],
-        //     rejectUnauthorized : false,
-        // });
         const client = new WebSocket(url)
         return client;
     }
@@ -33,7 +22,6 @@ export default class Strategy {
 
     async getPubToken() {
         const result = await http.post('/api/v1/bullet-public')
-        // console.log('pub token s', result)
         return result;
     }
 
@@ -58,10 +46,6 @@ export default class Strategy {
         client.onmessage = function (evt) {
             console.log(evt.data);
         };
-        
-        // console.log(client)
-
-        
     }
 
     subscribe(topic, _private = false) {

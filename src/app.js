@@ -8,17 +8,11 @@ import bodyParser from 'koa-bodyparser';
 import httpIns from './lib/http';
 
 import Strategy from './lib/strategy';
-// import http from 'http';
-// import socket from 'socket.io';
-// import request from 'request'
 
-// const io = require('socket.io')(server);
 
 async function  main() {
     const app = new Koa();
     const strategy = new Strategy();
-    // const server = http.Server(app.callback());
-    // const io = socket(server);
 
     app.use(bodyParser);
     app.listen(8090);
