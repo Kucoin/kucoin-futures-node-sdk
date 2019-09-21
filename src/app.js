@@ -27,6 +27,8 @@ async function  main() {
 
     datafeed.connectSocket();
 
+    datafeed.subscribe('/contractMarket/ticker:XBTUSDM');
+
     // const result = await httpIns.get('/api/v1/accounts')
     console.log(2)
 
