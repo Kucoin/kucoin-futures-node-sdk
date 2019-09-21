@@ -7,15 +7,17 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import httpIns from './lib/http';
 
-import Strategy from './lib/strategy';
+import Datafeed from './lib/datafeed';
 
 
 async function  main() {
     const app = new Koa();
-    const strategy = new Strategy();
+    const datafeed = new Datafeed();
 
     app.use(bodyParser);
     app.listen(8090);
+
+    // TODO get from .env
     // 你的账号相关的数据
     httpIns.setSignatureConfig({
         // key: '5d83a5f489fc844d2098958d',
@@ -23,7 +25,7 @@ async function  main() {
         // passphrase: '',
     })
 
-    strategy.connectSocket();
+    datafeed.connectSocket();
 
     // const result = await httpIns.get('/api/v1/accounts')
     console.log(2)

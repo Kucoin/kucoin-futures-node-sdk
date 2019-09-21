@@ -2,13 +2,18 @@
 import request from 'request'
 // import querystring from 'querystring';
 import CryptoJS  from 'crypto';
+import codes from './codes';
 
+const IS_PRODUCT = process.env.PRODUCTION === 'true';
+const baseUrl = IS_PRODUCT ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
+
+console.log(`http use baseUrl: (${baseUrl})`);
 
 let HttpConfig = {
     signatureConfig: {
       
     },
-    baseUrl: 'https://api.kumex.com',
+    baseUrl,
 };
 
 class Http {
@@ -98,7 +103,12 @@ class Http {
           if (error) {
             reject(error);
           } else {
-            resolve(JSON.parse(body));
+            const res = JSON.parse(body);
+            if (res.code == codes.SUCCESS) {
+              resolve(res);
+            } else {
+              reject(res);
+            }
           }
         });
       }).catch((e) => {
