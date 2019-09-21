@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/start.js"
+    "dev": "PRODUCTION=false nodemon src/start.js",
+    "prod": "PRODUCTION=true nodemon src/start.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "crypto": "^1.0.1",
+    "event-emitter": "^0.3.5",
     "koa": "^2.8.1",
     "koa-bodyparser": "^4.2.1",
     "querystring": "^0.2.0",
