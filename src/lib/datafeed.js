@@ -1,15 +1,19 @@
-
-import http from './http'
+import _ from 'lodash';
+import http from './http';
 import WebSocket from 'ws';
 import EventEmitter from 'event-emitter';
 import EventAllOff from 'event-emitter/all-off';
 // import io from 'socket.io-client';
 // import parser from 'socket.io-msgpack-parser';
 
+const generateId = () => '_e_' + Date.now() + (Math.random() * 365).toString(16).slice(4,14) + 'yl';
+
 export default class Datafeed {
 
+    trustConnected = false;
     client = null;
     emitter = new EventEmitter();
+    topicState = [];
 
     connectSocket = async () => {
         // clear all event
@@ -23,7 +27,7 @@ export default class Datafeed {
         // console.log('getPubToken config: ', config);
         console.log('getPubToken config');
 
-        const connectId = (Math.random() * 365).toString(16).slice(4,14)+'yl';
+        const connectId = generateId();
         console.log('generate connectId: ', connectId);
 
         this.emitter.on(`welcome_${connectId}`, this._handleAfterConnect);
@@ -59,23 +63,51 @@ export default class Datafeed {
             const { id, type } = message;
             switch(type) {
                 case 'welcome':
-                    console.log(`emit: welcome_${id}`);
-                    this.emitter.emit(`welcome_${id}`);
+                case 'ack':
+                    // console.log(`emit: welcome_${id}`);
+                    this.emitter.emit(`${type}_${id}`);
                     break;
-                // TODO message recieve
+                case 'message':
+                    // TODO message recieve
+                    console.log(message);
+                    break;
                 default:
                     break;
             }
         };
 
+        cl.onerror = (e) => {
+            console.log('socket connect onerror', e.message);
+        }
+
         cl.onclose = () => {
             console.log('socket connect closed');
-            // TODO try to reconnect or alert
+            this.trustConnected = false;
+            // try to reconnect
+            _.delay(3000, () => {
+                this.connectSocket();
+            });
         };
+    }
+
+    subscribe = (topic, _private = false) => {
+        this.topicState.push([topic, _private]);
+        this._sub(topic, _private);
+    }
+
+    unsubscribe = (topic) => {
+        this.topicState = this.topicState.filter(record => record[0] !== topic);
+        this._unsub(topic);
     }
 
     _handleAfterConnect = () => {
         console.log('recieved connect welcome ack');
+        this.trustConnected = true;
+
+        // resub
+        _.each(this.topicState, ([topic, _private]) => {
+            this._sub(topic, _private);
+        });
     }
 
     _connect = async (config) => {
@@ -97,23 +129,42 @@ export default class Datafeed {
         return await http.post('/api/v1/bullet-private');
     }
 
-    subscribe = (topic, _private = false) => {
-        if (!this.client) {
+    _sub = (topic, _private = false) => {
+        if (!this.trustConnected) {
             console.log('client not connected');
+            return;
         }
+
+        const id = generateId();
+        this.emitter.once(`ack_${id}`, () => {
+            console.log(`topic: ${topic} subscribed`);
+        });
+
         this.client.send(JSON.stringify({
-            id: Date.now(),
+            id,
             type: 'subscribe',
             topic,
             private: _private,
             response: true
         }));
+        console.log(`topic subscribe: ${topic}, send`);
     }
 
-    unsubscribe = (topic) => {
+    _unsub = (topic) => {
+        if (!this.trustConnected) {
+            console.log('client not connected');
+            return;
+        }
+
+        const id = generateId();
+        this.emitter.once(`ack_${id}`, () => {
+            console.log(`topic: ${topic} unsubscribed`);
+        });
+
         this.client.send(JSON.stringify({
             type: 'unsubscribe',
             topic,
         }));
+        console.log(`topic unsubscribe: ${topic}, send`);
     }
 }
