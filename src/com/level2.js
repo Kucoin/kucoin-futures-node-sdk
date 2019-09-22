@@ -6,9 +6,14 @@ class Level2 {
     datafeed;
     symbol;
 
-    constructor(symbol) {
+    constructor(symbol, datafeed) {
         this.symbol = symbol;
-        this.datafeed = new Datafeed();
+
+        if (datafeed instanceof Datafeed) {
+            this.datafeed = datafeed;
+        } else {
+            this.datafeed = new Datafeed();
+        }
     }
 
     listen = () => {

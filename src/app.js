@@ -8,6 +8,7 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import httpIns from './lib/http';
 import Level2 from './com/level2';
+import Ticker from './com/ticker';
 
 async function  main() {
     const app = new Koa();
@@ -22,14 +23,23 @@ async function  main() {
         // secret: 'c64e4866-7b15-45d3-a5c8-8183cf1d4341',
         // passphrase: '',
     })
+    // const result = await httpIns.get('/api/v1/accounts')
+    // console.log(2)
+
+    // console.log(result)
+
+    // const ticker = new Ticker('XBTUSDM');
+    // ticker.listen();
+    
+    // setInterval(() => {
+    //     const currentTicker = ticker.getSnapshot();
+    //     console.log(currentTicker);
+    // }, 1000);
+
 
     const l2 = new Level2('XBTUSDM');
     l2.listen();
 
-    // const result = await httpIns.get('/api/v1/accounts')
-    console.log(2)
-
-    // console.log(result)
 }
 
 main()

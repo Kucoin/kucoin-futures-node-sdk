@@ -24,6 +24,11 @@ export default class Datafeed {
     incrementSubscribeId = 0;
 
     connectSocket = async () => {
+        if (this.trustConnected) {
+            log('ws conn status: ', this.trustConnected);
+            return;
+        }
+
         // clear all event
         EventAllOff(this.emitter);
 
@@ -108,18 +113,20 @@ export default class Datafeed {
         };
     }
 
-    _onClose = null;
+    _onClose = [];
     _handleClose = () => {
         this.trustConnected = false;
         // on close
-        if (typeof this._onClose === 'function') {
-            this._onClose();
-        }
+        _.each(this._onClose, (fn) => {
+            if (typeof fn === 'function') {
+                fn();
+            }
+        });
     }
 
     onClose = (callback) => {
         if (typeof callback === 'function') {
-            this._onClose = callback;
+            this._onClose.push(callback);
         }
         return this;
     };
