@@ -3,10 +3,10 @@
 // const Koa = require('koa');
 // const app = new Koa();
 
+import _ from 'lodash';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import httpIns from './lib/http';
-
 import Datafeed from './lib/datafeed';
 
 
@@ -26,8 +26,20 @@ async function  main() {
     })
 
     datafeed.connectSocket();
+    datafeed.onClose(() => {
+        console.log('ws closed, status ', datafeed.trustConnected);
+    });
 
-    datafeed.subscribe('/contractMarket/ticker:XBTUSDM');
+    const listenId = datafeed.subscribe('/contractMarket/ticker:XBTUSDM', (message) => {
+        console.log(message.data);
+    });
+
+    _.delay(() => {
+        // test
+        console.log('unsubscribe test');
+        datafeed.unsubscribe('/contractMarket/ticker:XBTUSDM', listenId);
+    }, 20000);
+
 
     // const result = await httpIns.get('/api/v1/accounts')
     console.log(2)
