@@ -11,7 +11,7 @@ import Level2 from './com/level2';
 import Ticker from './com/ticker';
 import env from './.env';
 
-async function  main() {
+async function main() {
     const app = new Koa();
 
     app.use(bodyParser);
@@ -19,12 +19,9 @@ async function  main() {
 
     // 你的账号相关的数据
     httpIns.setSignatureConfig(env)
-    // const result = await httpIns.get('/api/v1/accounts')
-    // console.log(2)
 
     // const ticker = new Ticker('XBTUSDM');
     // ticker.listen();
-    
     // setInterval(() => {
     //     const currentTicker = ticker.getSnapshot();
     //     console.log(currentTicker);
@@ -32,8 +29,13 @@ async function  main() {
 
 
     const l2 = new Level2('XBTUSDM');
+    l2.debug = true;
     l2.listen();
-
+    setInterval(() => {
+        const orderbook = l2.getOrderBook(2);
+        console.log(JSON.stringify(orderbook));
+    }, 1000);
+    
 }
 
 main()
