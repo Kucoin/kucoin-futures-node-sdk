@@ -113,7 +113,7 @@ class Http {
         });
       }).catch((e) => {
         log(e);
-      });
+     });
   }
 }
 
