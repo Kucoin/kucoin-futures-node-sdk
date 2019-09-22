@@ -4,9 +4,9 @@
 1. 在该文件添加
 ```javascript
 export default {
-		key: '[你的 api key]',
-		secret: '[你的 api secret]',
-		passphrase: '[你的 api 密码]'
+	key: '[你的 api key]',
+	secret: '[你的 api secret]',
+	passphrase: '[你的 api 密码]'
 }
 ```
 
