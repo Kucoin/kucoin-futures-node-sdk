@@ -1,13 +1,13 @@
 
 import request from 'request'
-// import querystring from 'querystring';
 import CryptoJS  from 'crypto';
 import codes from './codes';
+import log from './log';
 
 const IS_PRODUCT = process.env.PRODUCTION === 'true';
 const baseUrl = IS_PRODUCT ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
 
-console.log(`http use baseUrl: (${baseUrl})`);
+log(`http use baseUrl: (${baseUrl})`);
 
 let HttpConfig = {
     signatureConfig: {
@@ -39,12 +39,12 @@ class Http {
     const signature = Http.sign(timestamp + configs.method.toUpperCase() + configs.url + data, secret);
 
     if (!HttpConfig.signatureConfig.key) {
-      console.warn('KC-API-KEY is not specified');
+      log('KC-API-KEY is not specified');
     }
     if (!HttpConfig.signatureConfig.passphrase) {
-      console.warn('KC-API-PASSPHRASE is not specified');
+      log('KC-API-PASSPHRASE is not specified');
     }
-    // console.log('auth --->', data)
+    // log('auth --->', data)
     return {
     //   ...(configs.headers || {}),
       'KC-API-KEY': HttpConfig.signatureConfig.key || '',
@@ -99,7 +99,7 @@ class Http {
   _request(config) {
     return new Promise((resolve, reject) => {
         request(config, (error, response, body) => {
-            // console.log(response)
+            // log(response)
           if (error) {
             reject(error);
           } else {
@@ -112,7 +112,7 @@ class Http {
           }
         });
       }).catch((e) => {
-        console.log(e);
+        log(e);
       });
   }
 }
