@@ -9,6 +9,7 @@ import bodyParser from 'koa-bodyparser';
 import httpIns from './lib/http';
 import Level2 from './com/level2';
 import Ticker from './com/ticker';
+import env from './.env';
 
 async function main() {
     const app = new Koa();
@@ -16,13 +17,8 @@ async function main() {
     app.use(bodyParser);
     app.listen(8090);
 
-    // TODO get from .env
     // 你的账号相关的数据
-    httpIns.setSignatureConfig({
-        // key: '5d83a5f489fc844d2098958d',
-        // secret: 'c64e4866-7b15-45d3-a5c8-8183cf1d4341',
-        // passphrase: '',
-    })
+    httpIns.setSignatureConfig(env)
 
     // const ticker = new Ticker('XBTUSDM');
     // ticker.listen();
