@@ -10,7 +10,7 @@ import httpIns from './lib/http';
 import Level2 from './com/level2';
 import Ticker from './com/ticker';
 
-async function  main() {
+async function main() {
     const app = new Koa();
 
     app.use(bodyParser);
@@ -23,14 +23,9 @@ async function  main() {
         // secret: 'c64e4866-7b15-45d3-a5c8-8183cf1d4341',
         // passphrase: '',
     })
-    // const result = await httpIns.get('/api/v1/accounts')
-    // console.log(2)
-
-    // console.log(result)
 
     // const ticker = new Ticker('XBTUSDM');
     // ticker.listen();
-    
     // setInterval(() => {
     //     const currentTicker = ticker.getSnapshot();
     //     console.log(currentTicker);
@@ -38,8 +33,13 @@ async function  main() {
 
 
     const l2 = new Level2('XBTUSDM');
+    l2.debug = true;
     l2.listen();
-
+    setInterval(() => {
+        const orderbook = l2.getOrderBook(2);
+        console.log(JSON.stringify(orderbook));
+    }, 1000);
+    
 }
 
 main()
