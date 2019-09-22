@@ -22,8 +22,6 @@ async function  main() {
     // const result = await httpIns.get('/api/v1/accounts')
     // console.log(2)
 
-    // console.log(result)
-
     // const ticker = new Ticker('XBTUSDM');
     // ticker.listen();
     

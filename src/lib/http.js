@@ -1,5 +1,6 @@
 
-import request from 'request'
+import querystring  from 'querystring';
+import request from 'request';
 import CryptoJS  from 'crypto';
 import codes from './codes';
 import log from './log';
@@ -61,15 +62,11 @@ class Http {
     const _config = Http.auth({
         method: 'POST',
         url,
-    }, params, HttpConfig.signatureConfig.secret)
+    }, JSON.stringify(params), HttpConfig.signatureConfig.secret)
     return this._request({
         url: _url,
         method: 'POST',
         headers: _config,
-        agentOptions: {
-            securityOptions: 'SSL_OP_NO_SSLv3',
-        },
-        rejectUnauthorized : false,
     });
   }
 
@@ -77,28 +74,64 @@ class Http {
     return Object.keys(params).join('&')
   }
 
+
+  /**
+   * 处理get/delete 的参数
+   */
+  resolveQueryParams(url, params = {}) {
+    const [ urlStr, urlParamsStr ] = url.split('?');
+    const _p = Object.assign({}, querystring.parse(urlParamsStr || ''), params);
+    const _hasParams = Object.keys(_p || {}).length > 0
+    const _params = _hasParams ? ('?' + querystring.stringify(_p)) : ''
+    const uri =urlStr + _params;
+    return {
+      url:  HttpConfig.baseUrl + uri, //最终请求地址
+      params: _params,  // 参数字符串
+      uri,  // uri
+    }
+  }
+  
+
   get(url = '', params = {}) {
-    const _url = HttpConfig.baseUrl + url;
+    
+    const resolvedConfig = this.resolveQueryParams(url, params);
+
     const _config = Http.auth({
         method: 'GET',
-        url,
+        url: resolvedConfig.uri,
     }, '', HttpConfig.signatureConfig.secret)
+
     return this._request({
-        url: _url,
+        url: resolvedConfig.url,
         method: 'GET',
         headers: _config,
-        agentOptions: {
-            securityOptions: 'SSL_OP_NO_SSLv3',
-            
-        },
-        rejectUnauthorized : false,
+    });
+  }
 
+  del(url = '', params = {}) {
+
+    const resolvedConfig = this.resolveQueryParams(url, params);
+
+    const _config = Http.auth({
+        method: 'DELETE',
+        url: resolvedConfig.uri,
+    }, '', HttpConfig.signatureConfig.secret)
+
+    return this._request({
+        url: resolvedConfig.url,
+        method: 'DELETE',
+        headers: _config,
     });
   }
 
   _request(config) {
     return new Promise((resolve, reject) => {
-        request(config, (error, response, body) => {
+        request(Object.assign({}, config, {
+          agentOptions: {
+            securityOptions: 'SSL_OP_NO_SSLv3',
+          },
+          rejectUnauthorized : false,
+        }), (error, response, body) => {
             // log(response)
           if (error) {
             reject(error);
