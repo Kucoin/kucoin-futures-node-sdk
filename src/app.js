@@ -5,7 +5,7 @@
 
 import _ from 'lodash';
 import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
+// import bodyParser from 'koa-bodyparser';
 import logUpdate from 'log-update';
 import httpIns from './lib/http';
 
@@ -14,10 +14,10 @@ import Ticker from './com/ticker';
 import env from '../.env';
 
 async function main() {
-    const app = new Koa();
+    // const app = new Koa();
 
-    app.use(bodyParser);
-    app.listen(8090);
+    // app.use(bodyParser);
+    // app.listen(8090);
 
     // 你的账号相关的数据
     httpIns.setSignatureConfig(env)

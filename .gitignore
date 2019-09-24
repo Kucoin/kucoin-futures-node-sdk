@@ -64,3 +64,4 @@ Temporary Items
 *-error.log
 node_modules/
 .env.js
+/app/**/*.js
