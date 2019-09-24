@@ -11,6 +11,15 @@ const targetTypesMap = {
     buy: 'bids',
 };
 
+const mergeDepth = (price, type, depth = 1) => {
+    if (type === 'asks') {
+        price = Math.ceil(price / depth) * depth;
+    } else {
+        price = Math.floor(price / depth) * depth;
+    }
+    return price;
+};
+
 const checkContinue = (arrBuffer = [], seq) => {
     if (arrBuffer.length) {
         if (arrBuffer[0][0] !== seq +1) {
@@ -26,11 +35,11 @@ const checkContinue = (arrBuffer = [], seq) => {
     return true;
 };
 
-const mapArr = (arr = []) => {
+const mapArr = (arr = [], parseKey = (str) => str) => {
     const res = {};
     for (let i = 0; i< arr.length; i++) {
         const item = arr[i];
-        res[item[0]] = item[1];
+        res[parseKey(item[0])] = item[1];
     }
     return res;
 };
@@ -69,6 +78,7 @@ class Level2 {
             this.datafeed = datafeed;
         } else {
             this.datafeed = new Datafeed();
+            // this.datafeed.debug = true;
         }
     }
 
@@ -82,10 +92,11 @@ class Level2 {
                 // update
                 const targetType = targetTypesMap[type];
                 if (_.indexOf(changeTypes, targetType) > -1) {
+                    const targetPrice = mergeDepth(price, targetType);
                     if (size == 0) {
-                        delete this.fullSnapshot[targetType][price];
+                        delete this.fullSnapshot[targetType][targetPrice];
                     } else {
-                        this.fullSnapshot[targetType][price] = size;
+                        this.fullSnapshot[targetType][targetPrice] = size;
                     }
                     this.fullSnapshot.sequence = sequence;
                 } else {
@@ -124,14 +135,14 @@ class Level2 {
         const continu = checkContinue(bufferArr, seq);
         if (continu) {
             _.each(bufferArr, (item) => {
-                // TODO price
                 const [sequence, price, type, size] = item;
                 const targetType = targetTypesMap[type];
                 if (_.indexOf(changeTypes, targetType) > -1) {
+                    const targetPrice = mergeDepth(price, targetType);
                     if (size == 0) {
-                        delete this.fullSnapshot[targetType][price];
+                        delete this.fullSnapshot[targetType][targetPrice];
                     } else {
-                        this.fullSnapshot[targetType][price] = size;
+                        this.fullSnapshot[targetType][targetPrice] = size;
                     }
                     this.fullSnapshot.sequence = sequence;
                 } else {
@@ -165,12 +176,13 @@ class Level2 {
                 result.data &&
                 result.data.symbol === this.symbol
             ) {
+                // console.log(result.data);
                 const { sequence, asks, bids } = result.data;
 
                 this.fullSnapshot.dirty = true;
                 this.fullSnapshot.sequence = sequence;
-                this.fullSnapshot.asks = mapArr(asks);
-                this.fullSnapshot.bids = mapArr(bids);
+                this.fullSnapshot.asks = mapArr(asks, (str) => mergeDepth(str, 'asks'));
+                this.fullSnapshot.bids = mapArr(bids, (str) => mergeDepth(str, 'bids'));
             }
         } catch (e) {
             this.debug && log('fetch level2 error', e);

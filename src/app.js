@@ -6,10 +6,12 @@
 import _ from 'lodash';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
+import logUpdate from 'log-update';
 import httpIns from './lib/http';
+
 import Level2 from './com/level2';
 import Ticker from './com/ticker';
-import env from './.env';
+import env from '../.env';
 
 async function main() {
     const app = new Koa();
@@ -29,13 +31,31 @@ async function main() {
 
 
     const l2 = new Level2('XBTUSDM');
-    l2.debug = true;
+    // l2.debug = true;
     l2.listen();
+
     setInterval(() => {
-        const orderbook = l2.getOrderBook(2);
-        console.log(JSON.stringify(orderbook));
-    }, 1000);
-    
+        const orderbook = l2.getOrderBook(11);
+
+        let asksStr = '';
+        _.each(orderbook.asks, ([price, size]) => {
+            asksStr += `${price} -> ${size} \n`;
+        });
+
+        let bidsStr = '';
+        _.each(orderbook.bids, ([price, size]) => {
+            bidsStr += `${price} -> ${size} \n`;
+        });
+
+        logUpdate.clear();
+        // console.log(JSON.stringify(orderbook));
+        logUpdate(`------------------------
+${orderbook.dirty ? '脏数据' : '可用数据'}
+------------------------
+${asksStr}----------sep-----------
+${bidsStr}------------------------
+`);
+    }, 200);
 }
 
 main()
