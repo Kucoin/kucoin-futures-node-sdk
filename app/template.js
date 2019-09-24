@@ -1,4 +1,6 @@
-
+/**
+ * 事例应用
+ */
 
 // const Koa = require('koa');
 // const app = new Koa();
@@ -7,10 +9,10 @@ import _ from 'lodash';
 import Koa from 'koa';
 // import bodyParser from 'koa-bodyparser';
 import logUpdate from 'log-update';
-import httpIns from './lib/http';
+import httpIns from '../src/lib/http';
 
-import Level2 from './com/level2';
-import Ticker from './com/ticker';
+import Level2 from '../src/com/level2';
+import Ticker from '../src/com/ticker';
 import env from '../.env';
 
 async function main() {
@@ -58,6 +60,4 @@ ${bidsStr}------------------------
     }, 200);
 }
 
-main()
-
-
+main();

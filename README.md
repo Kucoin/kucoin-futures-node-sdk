@@ -1,15 +1,56 @@
-### 使用方法    
- **env 配置**
-1. 在根目录创建.env.js 文件
-1. 在该文件添加
+# Node Helper for KuMEX Strategy
+## Usage:    
+### Env Config
+1. Run Command 
+```sh
+# create auth config
+copy .env.tpl.js .env.js
+```
+2. edit
 ```javascript
 export default {
-	key: '[你的 api key]',
-	secret: '[你的 api secret]',
-	passphrase: '[你的 api 密码]'
+	key: '[Your api key]',
+	secret: '[Your api secret]',
+	passphrase: '[Your api passphrase]'
 }
 ```
 
-**命令说明**
+### How to run
 
-1.启动命令` yarn dev `
+1. Base Command
+```sh
+#Sandbox
+yarn run dev
+
+#Online
+yarn run prod 
+```
+
+2. Strategy
+
+Create [appName].js in /app folder, so it won't be tracked by GIT. And `tempate.js` was already created in /app.
+
+3. Run
+
+```sh
+# [appName] is your strategy file name
+# default is: template
+yarn run dev -- [appName]
+```
+
+
+## TODO
+
+- [x] Datafeed
+- [x] Ticker
+- [x] Level2
+- [ ] Order
+- [ ] Orders
+- [ ] Position
+- [ ] Funding Fees
+- [ ] Time
+- [ ] Level3
+
+## License
+
+[MIT](LICENSE)
