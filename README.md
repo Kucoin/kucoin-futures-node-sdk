@@ -1,5 +1,11 @@
 # Node Helper for KuMEX Strategy
 ## Usage:    
+
+### Clone and Dep
+
+1. git clone
+2. yarn install
+
 ### Env Config
 1. Run Command 
 ```sh

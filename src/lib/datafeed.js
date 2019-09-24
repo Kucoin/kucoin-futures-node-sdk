@@ -15,6 +15,7 @@ const getTopicPrefix = topic => topic.split(':')[0];
 export default class Datafeed {
 
     trustConnected = false;
+    privateBullet = false;
     client = null;
     emitter = new EventEmitter();
     topicState = [];
@@ -23,6 +24,11 @@ export default class Datafeed {
     };
     incrementSubscribeId = 0;
     debug = false;
+
+    constructor(privateBullet = false, debug = false) {
+        this.privateBullet = privateBullet;
+        this.debug = debug;
+    }
 
     connectSocket = async () => {
         if (this.trustConnected) {
@@ -33,7 +39,7 @@ export default class Datafeed {
         // clear all event
         EventAllOff(this.emitter);
 
-        const config = await this._getPubToken();
+        const config = await this._getBulletToken();
         if (!config) {
             this.debug && log('getPubToken config invalid');
 
@@ -212,6 +218,7 @@ export default class Datafeed {
             this._sub(topic, _private);
         });
 
+        // TODO check ping
         // restart ping
         this._ping();
     }
@@ -229,12 +236,12 @@ export default class Datafeed {
         });
     }
 
-    _getPubToken = async () => {
-        return await http.post('/api/v1/bullet-public');
-    }
-
-    _getPrivateToken = async () => {
-        return await http.post('/api/v1/bullet-private');
+    _getBulletToken = async () => {
+        return await http.post(
+            this.privateBullet ?
+                '/api/v1/bullet-private' :
+                '/api/v1/bullet-public'
+        );
     }
 
     _sub = (topic, _private = false) => {

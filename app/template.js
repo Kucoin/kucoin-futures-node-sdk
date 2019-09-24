@@ -50,13 +50,13 @@ async function main() {
         });
 
         logUpdate.clear();
-        // console.log(JSON.stringify(orderbook));
         logUpdate(`------------------------
-${orderbook.dirty ? '脏数据' : '可用数据'}
+${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}/seq:${orderbook.sequence}
 ------------------------
 ${asksStr}----------sep-----------
 ${bidsStr}------------------------
 `);
+
     }, 200);
 }
 

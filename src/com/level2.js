@@ -86,9 +86,9 @@ class Level2 {
         const { sequence, change } = message || {};
         if (sequence && change) {
             const [price, type, size] = change.split(',');
-
-            // this.debug && log('check', sequence, this.fullSnapshot.sequence);
-            if (sequence === this.fullSnapshot.sequence + 1) {
+            const seq = this.fullSnapshot.sequence;
+            // this.debug && log('check', sequence, seq);
+            if (sequence === seq + 1) {
                 // update
                 const targetType = targetTypesMap[type];
                 if (_.indexOf(changeTypes, targetType) > -1) {
@@ -102,7 +102,8 @@ class Level2 {
                 } else {
                     this.debug && log('invalid type', type);
                 }
-            } else {
+            } else
+            if (sequence > seq) {
                 this.buffer.push([sequence, price, type, size]);
                 // rebuild
                 this.rebuild();
@@ -119,41 +120,55 @@ class Level2 {
     _rebuilding = false;
     rebuild = async () => {
         if (this._rebuilding) {
-            this.debug && log('rebuilding dirty level2, return');
+            this.debug && log('rebuilding dirty level2, return',
+                this.fullSnapshot.sequence,
+                this.buffer.length && this.buffer[this.buffer.length - 1][0],
+            );
             return;
         }
         this.debug && log('build dirty level2');
         this._rebuilding = true;
         this.fullSnapshot.dirty = true;
 
-        await delay(3000);
+        await delay(6500);
         const fetchSuccess = await this.fetch();
         const seq = this.fullSnapshot.sequence;
 
-        if (fetchSuccess) {
+        if (fetchSuccess && this.datafeed.trustConnected) {
             const bufferArr = this.getFilteredBuffer(seq);
-            const continu = checkContinue(bufferArr, seq);
-            if (continu) {
-                _.each(bufferArr, (item) => {
-                    const [sequence, price, type, size] = item;
-                    const targetType = targetTypesMap[type];
-                    if (_.indexOf(changeTypes, targetType) > -1) {
-                        const targetPrice = mergeDepth(price, targetType);
-                        if (size == 0) {
-                            delete this.fullSnapshot[targetType][targetPrice];
+
+            // if (bufferArr.length === 0 && this.buffer.length > 0) {
+            //     console.log('snapshot before', seq, this.buffer[this.buffer.length - 1][0]);
+            // }
+
+            if (bufferArr.length > 0 ||
+                (bufferArr.length === 0 && this.buffer.length === 0) ||
+                (bufferArr.length === 0 && (seq === this.buffer[this.buffer.length - 1][0]))
+            ) {
+                const continu = checkContinue(bufferArr, seq);
+                if (continu) {
+                    this.debug && log('seq & len', this.fullSnapshot.sequence, bufferArr.length, this.buffer.length);
+                    _.each(bufferArr, (item) => {
+                        const [sequence, price, type, size] = item;
+                        const targetType = targetTypesMap[type];
+                        if (_.indexOf(changeTypes, targetType) > -1) {
+                            const targetPrice = mergeDepth(price, targetType);
+                            if (size == 0) {
+                                delete this.fullSnapshot[targetType][targetPrice];
+                            } else {
+                                this.fullSnapshot[targetType][targetPrice] = size;
+                            }
+                            this.fullSnapshot.sequence = sequence;
                         } else {
-                            this.fullSnapshot[targetType][targetPrice] = size;
+                            this.debug && log('invalid type', type);
                         }
-                        this.fullSnapshot.sequence = sequence;
-                    } else {
-                        this.debug && log('invalid type', type);
-                    }
-                });
-                this.fullSnapshot.dirty = false;
-                this.buffer = [];
-                this.debug && log(this.fullSnapshot.sequence, bufferArr);
-            } else {
-                this.debug && log('level2 buffer is not continue with snapshot');
+                    });
+                    this.fullSnapshot.dirty = false;
+                    this.buffer = [];
+                    this.debug && log('level2 checked');
+                } else {
+                    this.debug && log('level2 buffer is not continue with snapshot');
+                }
             }
         }
         this._rebuilding = false;
@@ -178,7 +193,6 @@ class Level2 {
                 result.data &&
                 result.data.symbol === this.symbol
             ) {
-                // console.log(result.data);
                 const { sequence, asks, bids } = result.data;
 
                 this.fullSnapshot.dirty = true;
@@ -213,11 +227,13 @@ class Level2 {
 
     getOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
+        const sequence = this.fullSnapshot.sequence;
         const asks = arrMap(this.fullSnapshot.asks, 'desc').slice(-1 * limit);
         const bids = arrMap(this.fullSnapshot.bids, 'desc').slice(0, limit);
 
         return {
             dirty,
+            sequence,
             asks,
             bids,
         };
