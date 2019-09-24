@@ -127,33 +127,34 @@ class Level2 {
         this.fullSnapshot.dirty = true;
 
         await delay(3000);
-
-        await this.fetch();
+        const fetchSuccess = await this.fetch();
         const seq = this.fullSnapshot.sequence;
 
-        const bufferArr = this.getFilteredBuffer(seq);
-        const continu = checkContinue(bufferArr, seq);
-        if (continu) {
-            _.each(bufferArr, (item) => {
-                const [sequence, price, type, size] = item;
-                const targetType = targetTypesMap[type];
-                if (_.indexOf(changeTypes, targetType) > -1) {
-                    const targetPrice = mergeDepth(price, targetType);
-                    if (size == 0) {
-                        delete this.fullSnapshot[targetType][targetPrice];
+        if (fetchSuccess) {
+            const bufferArr = this.getFilteredBuffer(seq);
+            const continu = checkContinue(bufferArr, seq);
+            if (continu) {
+                _.each(bufferArr, (item) => {
+                    const [sequence, price, type, size] = item;
+                    const targetType = targetTypesMap[type];
+                    if (_.indexOf(changeTypes, targetType) > -1) {
+                        const targetPrice = mergeDepth(price, targetType);
+                        if (size == 0) {
+                            delete this.fullSnapshot[targetType][targetPrice];
+                        } else {
+                            this.fullSnapshot[targetType][targetPrice] = size;
+                        }
+                        this.fullSnapshot.sequence = sequence;
                     } else {
-                        this.fullSnapshot[targetType][targetPrice] = size;
+                        this.debug && log('invalid type', type);
                     }
-                    this.fullSnapshot.sequence = sequence;
-                } else {
-                    this.debug && log('invalid type', type);
-                }
-            });
-            this.fullSnapshot.dirty = false;
-            this.buffer = [];
-            this.debug && log(this.fullSnapshot.sequence, bufferArr);
-        } else {
-            this.debug && log('level2 buffer is not continue with snapshot');
+                });
+                this.fullSnapshot.dirty = false;
+                this.buffer = [];
+                this.debug && log(this.fullSnapshot.sequence, bufferArr);
+            } else {
+                this.debug && log('level2 buffer is not continue with snapshot');
+            }
         }
         this._rebuilding = false;
     }
@@ -170,6 +171,7 @@ class Level2 {
             }
         }
         */
+       let fetchSuccess = false;
         try {
             const result = await http.get(`/api/v1/level2/snapshot?symbol=${this.symbol}`);
             if (result.code === '200000' &&
@@ -183,10 +185,12 @@ class Level2 {
                 this.fullSnapshot.sequence = sequence;
                 this.fullSnapshot.asks = mapArr(asks, (str) => mergeDepth(str, 'asks'));
                 this.fullSnapshot.bids = mapArr(bids, (str) => mergeDepth(str, 'bids'));
+                fetchSuccess = true;
             }
         } catch (e) {
             this.debug && log('fetch level2 error', e);
         }
+        return fetchSuccess;
     }
 
     /** public */

@@ -297,7 +297,7 @@ export default class Datafeed {
 
                 this._handleClose();
                 this.connectSocket();
-            }, 10000);
+            }, 5000);
             this.emitter.once(`pong_${id}`, () => {
                 this.debug && log('ping get pong');
                 clearTimeout(timer);
@@ -308,6 +308,6 @@ export default class Datafeed {
                 type: 'ping',
             }));
             this.debug && log('ping, send');
-        }, 20000);
+        }, 10000);
     }
 }
