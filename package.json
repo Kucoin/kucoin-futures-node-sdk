@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PRODUCTION=false nodemon src/start.js",
-    "prod": "PRODUCTION=true nodemon src/start.js"
+    "prod": "PRODUCTION=true node src/start.js"
   },
   "author": "",
   "license": "ISC",

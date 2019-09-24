@@ -1,23 +1,25 @@
-
+/**
+ * 事例应用
+ */
 
 // const Koa = require('koa');
 // const app = new Koa();
 
 import _ from 'lodash';
 import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
+// import bodyParser from 'koa-bodyparser';
 import logUpdate from 'log-update';
-import httpIns from './lib/http';
+import httpIns from '../src/lib/http';
 
-import Level2 from './com/level2';
-import Ticker from './com/ticker';
+import Level2 from '../src/com/level2';
+import Ticker from '../src/com/ticker';
 import env from '../.env';
 
 async function main() {
-    const app = new Koa();
+    // const app = new Koa();
 
-    app.use(bodyParser);
-    app.listen(8090);
+    // app.use(bodyParser);
+    // app.listen(8090);
 
     // 你的账号相关的数据
     httpIns.setSignatureConfig(env)
@@ -48,16 +50,14 @@ async function main() {
         });
 
         logUpdate.clear();
-        // console.log(JSON.stringify(orderbook));
         logUpdate(`------------------------
-${orderbook.dirty ? '脏数据' : '可用数据'}
+${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}/seq:${orderbook.sequence}
 ------------------------
 ${asksStr}----------sep-----------
 ${bidsStr}------------------------
 `);
+
     }, 200);
 }
 
-main()
-
-
+main();
