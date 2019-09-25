@@ -51,7 +51,9 @@ async function main() {
 
         logUpdate.clear();
         logUpdate(`------------------------
-${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}/seq:${orderbook.sequence}
+${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}
+seq:  ${orderbook.sequence}
+ping: ${orderbook.ping} (ms)
 ------------------------
 ${asksStr}----------sep-----------
 ${bidsStr}------------------------
