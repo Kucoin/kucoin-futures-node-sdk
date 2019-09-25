@@ -88,7 +88,7 @@ class Level2 {
             const [price, type, size] = change.split(',');
             const seq = this.fullSnapshot.sequence;
             // this.debug && log('check', sequence, seq);
-            if (sequence === seq + 1) {
+            if (this.fullSnapshot.dirty === false && sequence === seq + 1) {
                 // update
                 const targetType = targetTypesMap[type];
                 if (_.indexOf(changeTypes, targetType) > -1) {
@@ -186,7 +186,7 @@ class Level2 {
             }
         }
         */
-       let fetchSuccess = false;
+        let fetchSuccess = false;
         try {
             const result = await http.get(`/api/v1/level2/snapshot?symbol=${this.symbol}`);
             if (result.code === '200000' &&
@@ -230,12 +230,14 @@ class Level2 {
         const sequence = this.fullSnapshot.sequence;
         const asks = arrMap(this.fullSnapshot.asks, 'desc').slice(-1 * limit);
         const bids = arrMap(this.fullSnapshot.bids, 'desc').slice(0, limit);
+        const ping = this.datafeed.ping;
 
         return {
             dirty,
             sequence,
             asks,
             bids,
+            ping,
         };
     }
 }

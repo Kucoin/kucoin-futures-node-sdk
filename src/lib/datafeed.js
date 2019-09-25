@@ -23,6 +23,7 @@ export default class Datafeed {
         // topicPrefix => [...hooks],
     };
     incrementSubscribeId = 0;
+    ping = 0;
     debug = false;
 
     constructor(privateBullet = false, debug = false) {
@@ -30,11 +31,18 @@ export default class Datafeed {
         this.debug = debug;
     }
 
+    _connecting = false;
     connectSocket = async () => {
         if (this.trustConnected) {
             this.debug && log('ws conn status: ', this.trustConnected);
             return;
         }
+        if (this._connecting) {
+            this.debug && log('ws is connecting, return');
+            return;
+        }
+        this._connecting = true;
+        this._clearPing();
 
         // clear all event
         EventAllOff(this.emitter);
@@ -45,6 +53,7 @@ export default class Datafeed {
 
             // try to reconnect
             _.delay(() => {
+                this._connecting = false;
                 this.connectSocket();
             }, 3000);
             return;
@@ -115,6 +124,7 @@ export default class Datafeed {
 
             // try to reconnect
             _.delay(() => {
+                this._connecting = false;
                 this.connectSocket();
             }, 3000);
         };
@@ -123,6 +133,8 @@ export default class Datafeed {
     _onClose = [];
     _handleClose = () => {
         this.trustConnected = false;
+        this.ping = 0;
+
         // on close
         _.each(this._onClose, (fn) => {
             if (typeof fn === 'function') {
@@ -212,13 +224,13 @@ export default class Datafeed {
     _handleAfterConnect = () => {
         this.debug && log('recieved connect welcome ack');
         this.trustConnected = true;
+        this._connecting = false;
 
         // resub
         _.each(this.topicState, ([topic, _private]) => {
             this._sub(topic, _private);
         });
 
-        // TODO check ping
         // restart ping
         this._ping();
     }
@@ -237,11 +249,17 @@ export default class Datafeed {
     }
 
     _getBulletToken = async () => {
-        return await http.post(
-            this.privateBullet ?
-                '/api/v1/bullet-private' :
-                '/api/v1/bullet-public'
-        );
+        let res = false;
+        try {
+            res = await http.post(
+                this.privateBullet ?
+                    '/api/v1/bullet-private' :
+                    '/api/v1/bullet-public'
+            );
+        } catch (e) {
+            this.debug && log('get bullet error', e);
+        }
+        return res;
     }
 
     _sub = (topic, _private = false) => {
@@ -285,11 +303,15 @@ export default class Datafeed {
     }
 
     _pingTs = null;
-    _ping = () => {
+    _clearPing = () => {
         if (this._pingTs) {
             clearInterval(this._pingTs);
             this._pingTs = null;
         }
+    }
+
+    _ping = () => {
+        this._clearPing();
 
         this._pingTs = setInterval(() => {
             if (!this.trustConnected) {
@@ -302,10 +324,19 @@ export default class Datafeed {
             const timer = setTimeout(() => {
                 this.debug && log('ping wait pong timeout');
 
+                if (this.client) {
+                    this.client.terminate();
+                    this.client = null;
+                }
+
                 this._handleClose();
                 this.connectSocket();
             }, 5000);
+
+            // calc ping ms
+            const pingPerform = Date.now(); 
             this.emitter.once(`pong_${id}`, () => {
+                this.ping = Date.now() - pingPerform;
                 this.debug && log('ping get pong');
                 clearTimeout(timer);
             });
