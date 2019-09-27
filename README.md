@@ -48,6 +48,7 @@ yarn run dev -- [appName]
 ## TODO
 
 - [x] Datafeed
+- [x] Logger
 - [x] Ticker
 - [x] Level2
 - [ ] Order

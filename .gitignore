@@ -67,3 +67,4 @@ node_modules/
 /app/*
 !app/.gitkeep
 !app/template.js
+/logs

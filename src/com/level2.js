@@ -69,7 +69,6 @@ class Level2 {
         asks: {},
         bids: {},
     };
-    debug = false;
 
     constructor(symbol, datafeed) {
         this.symbol = symbol;
@@ -78,7 +77,6 @@ class Level2 {
             this.datafeed = datafeed;
         } else {
             this.datafeed = new Datafeed();
-            // this.datafeed.debug = true;
         }
     }
 
@@ -87,7 +85,7 @@ class Level2 {
         if (sequence && change) {
             const [price, type, size] = change.split(',');
             const seq = this.fullSnapshot.sequence;
-            // this.debug && log('check', sequence, seq);
+            // log('check', sequence, seq);
             if (this.fullSnapshot.dirty === false && sequence === seq + 1) {
                 // update
                 const targetType = targetTypesMap[type];
@@ -100,7 +98,7 @@ class Level2 {
                     }
                     this.fullSnapshot.sequence = sequence;
                 } else {
-                    this.debug && log('invalid type', type);
+                    log('invalid type', type);
                 }
             } else
             if (sequence > seq) {
@@ -120,13 +118,13 @@ class Level2 {
     _rebuilding = false;
     rebuild = async () => {
         if (this._rebuilding) {
-            this.debug && log('rebuilding dirty level2, return',
+            log('rebuilding dirty level2, return',
                 this.fullSnapshot.sequence,
                 this.buffer.length && this.buffer[this.buffer.length - 1][0],
             );
             return;
         }
-        this.debug && log('build dirty level2');
+        log('build dirty level2');
         this._rebuilding = true;
         this.fullSnapshot.dirty = true;
 
@@ -147,7 +145,7 @@ class Level2 {
             ) {
                 const continu = checkContinue(bufferArr, seq);
                 if (continu) {
-                    this.debug && log('seq & len', this.fullSnapshot.sequence, bufferArr.length, this.buffer.length);
+                    log('seq & len', this.fullSnapshot.sequence, bufferArr.length, this.buffer.length);
                     _.each(bufferArr, (item) => {
                         const [sequence, price, type, size] = item;
                         const targetType = targetTypesMap[type];
@@ -160,14 +158,14 @@ class Level2 {
                             }
                             this.fullSnapshot.sequence = sequence;
                         } else {
-                            this.debug && log('invalid type', type);
+                            log('invalid type', type);
                         }
                     });
                     this.fullSnapshot.dirty = false;
                     this.buffer = [];
-                    this.debug && log('level2 checked');
+                    log('level2 checked');
                 } else {
-                    this.debug && log('level2 buffer is not continue with snapshot');
+                    log('level2 buffer is not continue with snapshot');
                 }
             }
         }
@@ -202,7 +200,7 @@ class Level2 {
                 fetchSuccess = true;
             }
         } catch (e) {
-            this.debug && log('fetch level2 error', e);
+            log('fetch level2 error', e);
         }
         return fetchSuccess;
     }
@@ -211,14 +209,14 @@ class Level2 {
     listen = () => {
         this.datafeed.connectSocket();
         this.datafeed.onClose(() => {
-            this.debug && log('ws closed, status ', this.datafeed.trustConnected);
+            log('ws closed, status ', this.datafeed.trustConnected);
             this.rebuild();
         });
 
         const topic = `/contractMarket/level2:${this.symbol}`;
         this.datafeed.subscribe(topic, (message) => {
             if (message.topic === topic) {
-                // this.debug && log(message.data);
+                // log(message.data);
                 this.bufferMessage(message.data);
             }
         });
