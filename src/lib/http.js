@@ -6,7 +6,7 @@ import codes from './codes';
 import log from './log';
 
 const IS_PRODUCT = process.env.PRODUCTION === 'true';
-const baseUrl = IS_PRODUCT ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
+const baseUrl = IS_PRODUCT || true ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
 
 log(`http use baseUrl: (${baseUrl})`);
 
@@ -57,7 +57,7 @@ class Http {
 
   post(url = '', params = {}) {
     const _url = HttpConfig.baseUrl + url;
-    const body = JSON.stringify(params);
+    const body =  JSON.stringify(params || '{}');
     const _config = Http.auth({
         method: 'POST',
         url,
@@ -145,7 +145,7 @@ class Http {
           }
         });
       }).catch((e) => {
-        log(e);
+        log('HTTP ERROR',JSON.stringify(config), e);
      });
   }
 }
