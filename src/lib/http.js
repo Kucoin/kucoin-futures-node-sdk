@@ -6,7 +6,7 @@ import codes from './codes';
 import log from './log';
 
 const IS_PRODUCT = process.env.PRODUCTION === 'true';
-const baseUrl = IS_PRODUCT ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
+const baseUrl = IS_PRODUCT || true ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
 
 log(`http use baseUrl: (${baseUrl})`);
 
@@ -34,9 +34,8 @@ class Http {
     //
   static auth(configs, data = '', secret = '') {
 
-    // timestamp + method + requestEndpoint + body
+    const timestamp =  Date.now();
 
-    const timestamp = Date.now();
     const signature = Http.sign(timestamp + configs.method.toUpperCase() + configs.url + data, secret);
 
     if (!HttpConfig.signatureConfig.key) {
@@ -45,7 +44,6 @@ class Http {
     if (!HttpConfig.signatureConfig.passphrase) {
       log('KC-API-PASSPHRASE is not specified');
     }
-    // log('auth --->', data)
     return {
     //   ...(configs.headers || {}),
       'KC-API-KEY': HttpConfig.signatureConfig.key || '',
@@ -59,14 +57,16 @@ class Http {
 
   post(url = '', params = {}) {
     const _url = HttpConfig.baseUrl + url;
+    const body =  JSON.stringify(params || '{}');
     const _config = Http.auth({
         method: 'POST',
         url,
-    }, JSON.stringify(params), HttpConfig.signatureConfig.secret)
+    }, body, HttpConfig.signatureConfig.secret)
     return this._request({
         url: _url,
         method: 'POST',
         headers: _config,
+        body,
     });
   }
 
@@ -145,7 +145,7 @@ class Http {
           }
         });
       }).catch((e) => {
-        log(e);
+        log('HTTP ERROR',JSON.stringify(config), e);
      });
   }
 }
