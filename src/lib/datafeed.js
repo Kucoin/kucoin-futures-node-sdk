@@ -72,7 +72,7 @@ export default class Datafeed {
 
         cl.onopen = () => {
             // ws.send('foo');
-            log('socket connect opend');
+            log('socket connect opend', this._maxId, cl._maxId);
             this.client = cl;
         };
           
@@ -83,7 +83,7 @@ export default class Datafeed {
             }
             let message = null;
             try {
-                log('parse: ', evt.data);
+                log('parse: ', evt.data, this._maxId, cl._maxId);
                 message = JSON.parse(evt.data);
             } catch (e) {
                 log('parse message error');
@@ -113,11 +113,11 @@ export default class Datafeed {
         };
 
         cl.onerror = (e) => {
-            log('socket connect onerror', e.message);
+            log('socket connect onerror', this._maxId, cl._maxId, e.message);
         }
 
         cl.onclose = () => {
-            log('socket connect closed');
+            log('socket connect closed', this._maxId, cl._maxId);
             this._handleClose();
 
             // try to reconnect
@@ -233,6 +233,7 @@ export default class Datafeed {
         this._ping();
     }
 
+    _maxId = 0;
     _connect = async (config) => {
         const server = config.server;
         const connectId = config.connectId;
@@ -241,9 +242,12 @@ export default class Datafeed {
             token,
         } = server;
         const url = `${instanceServers[0].endpoint}?token=${token}&acceptUserMessage=true&connectId=${connectId}`;
-        return new WebSocket(url, {
+        this._maxId += 1;
+        const client = new WebSocket(url, {
             handshakeTimeout: 30,
         });
+        client._maxId = this._maxId;
+        return client;
     }
 
     _getBulletToken = async () => {
@@ -268,7 +272,7 @@ export default class Datafeed {
 
         const id = generateId();
         this.emitter.once(`ack_${id}`, () => {
-            log(`topic: ${topic} subscribed`);
+            log(`topic: ${topic} subscribed`, id);
         });
 
         this.client.send(JSON.stringify({
@@ -278,7 +282,7 @@ export default class Datafeed {
             private: _private,
             response: true
         }));
-        log(`topic subscribe: ${topic}, send`);
+        log(`topic subscribe: ${topic}, send`, id);
     }
 
     _unsub = (topic) => {
@@ -289,7 +293,7 @@ export default class Datafeed {
 
         const id = generateId();
         this.emitter.once(`ack_${id}`, () => {
-            log(`topic: ${topic} unsubscribed`);
+            log(`topic: ${topic} unsubscribed`, id);
         });
 
         this.client.send(JSON.stringify({
@@ -297,7 +301,7 @@ export default class Datafeed {
             type: 'unsubscribe',
             topic,
         }));
-        log(`topic unsubscribe: ${topic}, send`);
+        log(`topic unsubscribe: ${topic}, send`, id);
     }
 
     _pingTs = null;
@@ -321,14 +325,12 @@ export default class Datafeed {
             // ping timeout
             const timer = setTimeout(() => {
                 log('ping wait pong timeout');
+                this._clearPing();
 
                 if (this.client) {
                     this.client.terminate();
                     this.client = null;
                 }
-
-                this._handleClose();
-                this.connectSocket();
             }, 5000);
 
             // calc ping ms
