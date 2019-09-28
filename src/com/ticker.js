@@ -7,7 +7,7 @@ class Ticker {
     symbol;
     snapshot = {
         dirty: true,
-        data: null,
+        data: {},
     };
 
     constructor(symbol, datafeed) {

@@ -150,6 +150,4 @@ class Http {
   }
 }
 
-const httpInstance = new Http()
-
-export default httpInstance;
+export default new Http();

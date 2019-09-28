@@ -1,42 +1,39 @@
 /**
  * 事例应用
  */
-
-// const Koa = require('koa');
-// const app = new Koa();
-
 import _ from 'lodash';
-import Koa from 'koa';
+// import Koa from 'koa';
 // import bodyParser from 'koa-bodyparser';
 import logUpdate from 'log-update';
-import httpIns from '../src/lib/http';
-
+import http from '../src/lib/http';
+import Datafeed from '../src/lib/datafeed';
+// import log from '../src/lib/log';
+// import Ticker from '../src/com/ticker';
 import Level2 from '../src/com/level2';
-import Ticker from '../src/com/ticker';
 import env from '../.env';
+
+const SYMBOL = 'XBTUSDM';
 
 async function main() {
     // const app = new Koa();
-
     // app.use(bodyParser);
     // app.listen(8090);
 
-    // 你的账号相关的数据
-    httpIns.setSignatureConfig(env)
+    // set account api keys
+    http.setSignatureConfig(env);
 
-    // const ticker = new Ticker('XBTUSDM');
+    const datafeed = new Datafeed();
+
+    // const ticker = new Ticker(SYMBOL, datafeed);
     // ticker.listen();
-    // setInterval(() => {
-    //     const currentTicker = ticker.getSnapshot();
-    //     console.log(currentTicker);
-    // }, 1000);
 
-
-    const l2 = new Level2('XBTUSDM');
+    const l2 = new Level2(SYMBOL, datafeed);
     l2.listen();
 
     setInterval(() => {
         const orderbook = l2.getOrderBook(11);
+        // const tickerWS = ticker.getSnapshot();
+        // const currentTicker = tickerWS.data;
 
         let asksStr = '';
         _.each(orderbook.asks, ([price, size]) => {
@@ -48,11 +45,16 @@ async function main() {
             bidsStr += `${price} -> ${size} \n`;
         });
 
+        // ticker ${tickerWS.dirty ? 'Dirty Data' : 'Trust Data'}
+        // ticker:  ${currentTicker.price} -> ${currentTicker.size}
+        // bestBid: ${currentTicker.bestBidPrice},${currentTicker.bestBidSize} 
+        // bestAsk: ${currentTicker.bestAskPrice},${currentTicker.bestAskSize}
+
         logUpdate.clear();
         logUpdate(`------------------------
-${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}
-seq:  ${orderbook.sequence}
-ping: ${orderbook.ping} (ms)
+l2 ${orderbook.dirty ? 'Dirty Data' : 'Trust Data'}
+l2 seq:  ${orderbook.sequence}
+ping:    ${orderbook.ping} (ms)
 ------------------------
 ${asksStr}----------sep-----------
 ${bidsStr}------------------------
