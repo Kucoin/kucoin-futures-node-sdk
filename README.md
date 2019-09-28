@@ -51,8 +51,8 @@ yarn run dev -- [appName]
 - [x] Logger
 - [x] Ticker
 - [x] Level2
-- [ ] Order
-- [ ] Orders
+- [x] Order
+- [x] Orders
 - [ ] Position
 - [ ] Funding Fees
 - [ ] Time
