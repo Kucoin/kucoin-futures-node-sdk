@@ -132,7 +132,8 @@ class Http {
           },
           rejectUnauthorized : false,
         }), (error, response, body) => {
-            // log(response)
+          log('res:', config.url, response.statusCode, response.statusMessage, body);
+
           if (error) {
             reject(error);
           } else {

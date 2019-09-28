@@ -109,7 +109,7 @@ class Order {
         return result;
     }
 
-    cancleAllOrders = () => {
+    cancleAllOrders = async () => {
         // DELETE /api/v1/orders?symbol=XBTUSDM
         let result = false;
 
@@ -130,7 +130,7 @@ class Order {
         return result;
     }
 
-    cancleAllStopOrders = () => {
+    cancleAllStopOrders = async () => {
         // DELETE /api/v1/stopOrders?symbol=XBTUSDM
         let result = false;
 
@@ -147,6 +147,65 @@ class Order {
             result = cancelledOrderIds;
         } catch (e) {
             log('cancle all stop order error', e);
+        }
+        return result;
+    }
+
+    getActiveOrders = async () => {
+        // GET /api/v1/orders?status=active
+        let result = false;
+
+        try {
+            /*
+            {
+                "code": "200000",
+                "data": {
+                    "currentPage": 1,
+                    "pageSize": 100,
+                    "totalNum": 1000,
+                    "totalPage": 10,
+                    "items": [
+                        {
+                            "id": "5cdfc138b21023a909e5ad55", //订单编号
+                            "symbol": "XBTUSDM",  //合约编号
+                            "type": "limit",   //类型, 市价单或限价单
+                            "side": "buy",  //买卖方向
+                            "price": "3600",  //下单价格
+                            "size": 20000,  //数量
+                            "value": "56.1167227833",  //订单价值
+                            "dealValue": "0",  //已经成交订单价值
+                            "dealSize": 0,  //已经成交订单数量
+                            "stp": "",  //stp 类型
+                            "stop": "",  //止损订单类型
+                            "stopPriceType": "",  //止损订单触发价格类型
+                            "stopTriggered": false,  //止损订单是否触发标志
+                            "stopPrice": null,  //止损订单触发价格
+                            "timeInForce": "GTC",  //timeInForce类型
+                            "postOnly": false,  //postOnly标志
+                            "hidden": false,  //隐藏单标志
+                            "iceberg": false,  //冰山单标志
+                            "visibleSize": null,  //冰山单可见数量
+                            "leverage": "20",  //杠杆倍数
+                            "forceHold": false,  //强制冻结单标志
+                            "closeOrder": false, //平仓单标志
+                            "closeOnly": false,  //只减仓单标志
+                            "clientOid": "5ce24c16b210233c36ee321d",  //客户订单编号
+                            "remark": null,  //注解
+                            "isActive": true,  //未完成订单标志
+                            "cancelExist": false,  //订单存在取消数量标志
+                            "createdAt": 1558167872000  //创建时间
+                            }
+                        ]
+                    }  
+                }
+            */
+            const { data } = await http.get('/api/v1/orders', {
+                symbol: this.symbol,
+                status: 'active',
+            });
+            result = data;
+        } catch (e) {
+            log('get active orders error', e);
         }
         return result;
     }
@@ -172,7 +231,7 @@ class Order {
         */
         let result = false;
         try {
-            const clientOid = genUUID('clOid');
+            const clientOid = genUUID();
 
             const { data: { orderId } } = await http.post('/api/v1/orders', {
                 ...typeProps,
