@@ -12,6 +12,8 @@ import log from '../src/lib/log';
 // import Ticker from '../src/com/ticker';
 import Level2 from '../src/com/level2';
 import Order from '../src/com/order';
+// import Position from '../src/com/position';
+// import Account from '../src/com/account';
 import env from '../.env';
 
 const SYMBOL = 'XBTUSDM';
@@ -23,6 +25,15 @@ async function main() {
 
     // set account api keys
     http.setSignatureConfig(env);
+
+    // const account = new Account(SYMBOL);
+    // const position = new Position(SYMBOL);
+
+    // const acc = await account.getOverview();
+    // log('acc', acc);
+    // const pos = await position.getPosition();
+    // log('pos', pos);
+    // return;
 
     // use single private datafeed
     const datafeed = new Datafeed(true);
