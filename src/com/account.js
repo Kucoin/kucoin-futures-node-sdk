@@ -3,11 +3,6 @@ import http from '../lib/http';
 import log from '../lib/log';
 
 class Account {
-    symbol;
-
-    constructor(symbol) {
-        this.symbol = symbol;
-    }
 
     getOverview = async () => {
         // GET /api/v1/account-overview

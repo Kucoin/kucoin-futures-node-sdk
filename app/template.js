@@ -14,6 +14,8 @@ import Level2 from '../src/com/level2';
 import Order from '../src/com/order';
 // import Position from '../src/com/position';
 // import Account from '../src/com/account';
+// import Fee from '../src/com/fee';
+// import Time from '../src/com/time';
 import env from '../.env';
 
 const SYMBOL = 'XBTUSDM';
@@ -26,13 +28,22 @@ async function main() {
     // set account api keys
     http.setSignatureConfig(env);
 
-    // const account = new Account(SYMBOL);
+    // const account = new Account();
     // const position = new Position(SYMBOL);
 
     // const acc = await account.getOverview();
     // log('acc', acc);
     // const pos = await position.getPosition();
     // log('pos', pos);
+    // return;
+
+    // const time = new Time();
+    // const fee = new Fee(SYMBOL);
+
+    // const ts = await time.getTimestamp();
+    // log('ts', ts);
+    // const fees = await fee.getFundingHistory();
+    // log('fees', fees);
     // return;
 
     // use single private datafeed

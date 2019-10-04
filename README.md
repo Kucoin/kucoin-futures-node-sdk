@@ -55,8 +55,8 @@ yarn run dev -- [appName]
 - [x] Orders
 - [x] Position
 - [x] Account Overview
-- [ ] Funding Fees
-- [ ] Time
+- [x] Funding Fees
+- [x] Time
 - [ ] Level3
 
 ## License
