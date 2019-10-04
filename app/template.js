@@ -16,6 +16,7 @@ import Order from '../src/com/order';
 // import Account from '../src/com/account';
 // import Fee from '../src/com/fee';
 // import Time from '../src/com/time';
+// import Contract from '../src/com/contract';
 import env from '../.env';
 
 const SYMBOL = 'XBTUSDM';
@@ -44,6 +45,11 @@ async function main() {
     // log('ts', ts);
     // const fees = await fee.getFundingHistory();
     // log('fees', fees);
+    // return;
+    
+    // const ct = new Contract(SYMBOL);
+    // const ctd = await ct.getOverview();
+    // log('ctd', ctd);
     // return;
 
     // use single private datafeed

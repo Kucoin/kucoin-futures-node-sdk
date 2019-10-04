@@ -138,7 +138,7 @@ class Http {
             reject(error);
           } else {
             const res = JSON.parse(body);
-            if (res.code == codes.SUCCESS) {
+            if (res.code == codes.SUCCESS || res.code == codes.SHORT_SUCCESS) {
               resolve(res);
             } else {
               reject(res);
