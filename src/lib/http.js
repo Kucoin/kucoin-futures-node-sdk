@@ -132,16 +132,24 @@ class Http {
           },
           rejectUnauthorized : false,
         }), (error, response, body) => {
-          log('res:', config.url, response.statusCode, response.statusMessage, body);
+          try {
+            log('res:', error, config.url, response.statusCode, response.statusMessage, body);
+          } catch (e) {
+            log(e);
+          }
 
           if (error) {
             reject(error);
           } else {
-            const res = JSON.parse(body);
-            if (res.code == codes.SUCCESS || res.code == codes.SHORT_SUCCESS) {
-              resolve(res);
-            } else {
-              reject(res);
+            try {
+              const res = JSON.parse(body);
+              if (res.code == codes.SUCCESS || res.code == codes.SHORT_SUCCESS) {
+                resolve(res);
+              } else {
+                reject(res);
+              }
+            } catch (e) {
+              reject(e);
             }
           }
         });
