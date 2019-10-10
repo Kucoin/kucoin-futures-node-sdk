@@ -4,6 +4,8 @@ import log from '../lib/log';
 
 class Account {
 
+    // TODO update by websocket
+
     getOverview = async () => {
         // GET /api/v1/account-overview
         let result = false;

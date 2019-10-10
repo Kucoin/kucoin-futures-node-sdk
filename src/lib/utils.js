@@ -21,14 +21,14 @@ export const mergeDepth = (price, type, depth = 1) => {
     return price;
 };
 
-export const checkContinue = (arrBuffer = [], seq) => {
+export const checkContinue = (arrBuffer = [], seq, seqIndex = 0) => {
     if (arrBuffer.length) {
-        if (arrBuffer[0][0] !== seq +1) {
+        if (arrBuffer[0][seqIndex] !== seq +1) {
             return false;
         }
         
         for (let i = 0; i < arrBuffer.length; i++) {
-            if (arrBuffer[i + 1] && arrBuffer[i + 1][0] !== arrBuffer[i][0] + 1) {
+            if (arrBuffer[i + 1] && arrBuffer[i + 1][seqIndex] !== arrBuffer[i][seqIndex] + 1) {
                 return false;
             }
         }
@@ -58,5 +58,14 @@ export const arrMap = (map = {}, order = 'asc') => {
             return a[0] - b[0];
         }
     });
+    return res;
+};
+
+export const mapl3Arr = (arr = []) => {
+    const res = {};
+    for (let i = 0; i< arr.length; i++) {
+        const item = arr[i];
+        res[item[1]] = item; // orderId
+    }
     return res;
 };

@@ -177,6 +177,8 @@ class Level2 {
         this.rebuild();
     }
 
+    // TODO message event handler
+
     getOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
         const sequence = this.fullSnapshot.sequence;

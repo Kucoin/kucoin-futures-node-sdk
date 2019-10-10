@@ -8,6 +8,9 @@ class Position {
     constructor(symbol) {
         this.symbol = symbol;
     }
+    
+    // TODO update by websocket
+
 
     getPosition = async () => {
         // GET /api/v1/position?symbol=XBTUSDM

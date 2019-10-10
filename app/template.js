@@ -17,6 +17,7 @@ import Order from '../src/com/order';
 // import Fee from '../src/com/fee';
 // import Time from '../src/com/time';
 // import Contract from '../src/com/contract';
+import Level3 from '../src/com/level3';
 import env from '../.env';
 
 const SYMBOL = 'XBTUSDM';
@@ -51,6 +52,10 @@ async function main() {
     // const ctd = await ct.getOverview();
     // log('ctd', ctd);
     // return;
+
+    const l3 = new Level3(SYMBOL);
+    l3.listen();
+    return;
 
     // use single private datafeed
     const datafeed = new Datafeed(true);
