@@ -8,6 +8,7 @@ import {
     checkContinue,
     mapl3Arr,
     arrMap,
+    arrl3Map,
     targetTypesMap,
 } from '../lib/utils';
 
@@ -71,8 +72,7 @@ class Level3 {
         this.fullSnapshot.dirty = true;
 
         await delay(6100);
-        let fetchSuccess = false;
-        // const fetchSuccess = await this.fetch();
+        const fetchSuccess = await this.fetch();
         const seq = this.fullSnapshot.sequence;
 
         if (fetchSuccess && this.datafeed.trustConnected) {
@@ -201,7 +201,7 @@ class Level3 {
                     const targetType = targetTypesMap[side];
                     if (_.indexOf(changeTypes, targetType) > -1) {
                         if (this.fullSnapshot[targetType][makerOrderId]) {
-                            if (size === 0) {
+                            if (size <= 0) {
                                 delete this.fullSnapshot[targetType][makerOrderId];
                             } else {
                                 this.fullSnapshot[targetType][makerOrderId][3] = size;
@@ -225,14 +225,14 @@ class Level3 {
                     // TODO update event
                     const { orderId, size } = message;
                     if (this.fullSnapshot.asks[orderId]) {
-                        if (size === 0) {
+                        if (size <= 0) {
                             delete this.fullSnapshot.asks[orderId];
                         } else {
                             this.fullSnapshot.asks[orderId][3] = size;
                         }
                     }
                     if (this.fullSnapshot.bids[orderId]) {
-                        if (size === 0) {
+                        if (size <= 0) {
                             delete this.fullSnapshot.bids[orderId];
                         } else {
                             this.fullSnapshot.bids[orderId][3] = size;
@@ -295,11 +295,11 @@ class Level3 {
     // TOOD message event handler
 
     // TODO get order book
-    getOrderBook = (limit = 10) => {
+    getDetailOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
         const sequence = this.fullSnapshot.sequence;
-        const asks = arrMap(this.fullSnapshot.asks, 'asc').slice(0, limit);
-        const bids = arrMap(this.fullSnapshot.bids, 'desc').slice(0, limit);
+        const asks = arrl3Map(this.fullSnapshot.asks, 'asks', 'asc').slice(0, limit);
+        const bids = arrl3Map(this.fullSnapshot.bids, 'bids', 'desc').slice(0, limit);
         const ping = this.datafeed.ping;
 
         return {
@@ -307,6 +307,42 @@ class Level3 {
             sequence,
             asks,
             bids,
+            ping,
+        };
+    }
+
+    getOrderBook = (limit = 10) => {
+        const dirty = this.fullSnapshot.dirty;
+        const sequence = this.fullSnapshot.sequence;
+        const ping = this.datafeed.ping;
+
+        const asks = arrl3Map(this.fullSnapshot.asks, 'asks', 'asc');
+        const asksTmp = {};
+        _.each(asks, ([price, size]) => {
+            if (asksTmp[price]) {
+                asksTmp[price] += (+size);
+            } else {
+                asksTmp[price] = (+size);
+            }
+        });
+        const finalAsks = arrMap(asksTmp, 'asc').slice(0, limit);
+
+        const bids = arrl3Map(this.fullSnapshot.bids, 'bids', 'desc');
+        const bidsTmp = {};
+        _.each(bids, ([price, size]) => {
+            if (bidsTmp[price]) {
+                bidsTmp[price] += (+size);
+            } else {
+                bidsTmp[price] = (+size);
+            }
+        });
+        const finalBids = arrMap(bidsTmp, 'desc').slice(0, limit);
+
+        return {
+            dirty,
+            sequence,
+            asks: finalAsks,
+            bids: finalBids,
             ping,
         };
     }

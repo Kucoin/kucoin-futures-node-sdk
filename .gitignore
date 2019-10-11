@@ -68,4 +68,6 @@ pm2.json
 /app/*
 !app/.gitkeep
 !app/template.js
+!app/level3-full.js
+!app/level3-merge.js
 /logs
