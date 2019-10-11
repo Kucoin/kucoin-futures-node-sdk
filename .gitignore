@@ -70,4 +70,5 @@ pm2.json
 !app/template.js
 !app/level3-full.js
 !app/level3-merge.js
+!app/level2-book.js
 /logs
