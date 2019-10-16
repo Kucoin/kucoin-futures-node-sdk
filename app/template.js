@@ -18,8 +18,9 @@ import Order from '../src/com/order';
 // import Time from '../src/com/time';
 // import Contract from '../src/com/contract';
 // import Level3 from '../src/com/level3';
-import env from '../.env';
+import { getEnv } from '../src/lib/env';
 
+const env = getEnv();
 const SYMBOL = 'XBTUSDM';
 
 async function main() {

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PRODUCTION=false nodemon src/start.js",
-    "prod": "PRODUCTION=true node src/start.js"
+    "prod": "PRODUCTION=true node src/start.js",
+    "build": "./node_modules/.bin/babel src --out-dir sdk && rm -f sdk/start.js"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +31,8 @@
     "ws": "^7.1.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

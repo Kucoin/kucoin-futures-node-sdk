@@ -5,13 +5,14 @@ import _ from 'lodash';
 import logUpdate from 'log-update';
 import http from '../src/lib/http';
 import Level2 from '../src/com/level2';
-import env from '../.env';
+import { getEnv } from '../src/lib/env';
 
+console.log(1, getEnv());
 const SYMBOL = 'XBTUSDM';
 
 async function main() {
     // set account api keys
-    http.setSignatureConfig(env);
+    http.setSignatureConfig(getEnv());
 
     const l2 = new Level2(SYMBOL);
     l2.listen();

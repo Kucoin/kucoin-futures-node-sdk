@@ -1,5 +1,7 @@
 require('babel-register');
 
+global._RUN_AS_FRAMEWORK_HELPER_ = true;
+
 const path = require('path');
 // const fs = require('fs');
 
