@@ -1,5 +1,5 @@
 # Node Helper for KuMEX Strategy
-## Usage:    
+## Usage As Framework Helper:    
 
 ### Clone and Dep
 
@@ -45,6 +45,35 @@ yarn run dev -- [appName]
 ```
 
 
+## Usage As SDK:    
+
+### build by self
+1. Clone;
+
+2. Build;
+```
+# install deps
+yarn install
+
+# build
+yarn run build
+
+# link sdk folder
+yarn link
+```
+
+### use package
+```
+# use yarn
+yarn add kumex-node-sdk
+
+# or use npm
+npm install kumex-node-sdk
+```
+
+### use SDK
+There's an example in the /sdk_example folder.
+
 ## TODO
 
 - [x] Datafeed
@@ -58,7 +87,7 @@ yarn run dev -- [appName]
 - [x] Funding Fees
 - [x] Time
 - [x] Level3
-- [ ] Build As SDK
+- [x] Build As SDK
 
 ## License
 

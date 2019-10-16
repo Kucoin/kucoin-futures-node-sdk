@@ -8,6 +8,7 @@
         "polyfill": false,
         "regenerator": true
       }],
+      "add-module-exports",
       "transform-decorators-legacy",
       "transform-class-properties",
       "babel-plugin-transform-object-rest-spread"

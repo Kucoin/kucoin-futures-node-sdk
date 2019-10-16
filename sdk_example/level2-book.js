@@ -1,11 +1,26 @@
 /**
- * An example level2 test
+ * An example sdk level2 test
  */
-import _ from 'lodash';
-import logUpdate from 'log-update';
-import http from '../src/lib/http';
-import Level2 from '../src/com/level2';
-import { getEnv } from '../src/lib/env';
+// default is sandbox if _USE_KUMEX_ONLINE_ is false or not set
+global._USE_KUMEX_ONLINE_ = true;
+
+// set env configure
+const { setEnv, getEnv } = require('../sdk/lib/env');
+console.log('set env', setEnv);
+setEnv({
+	log: {
+		writeFile: true,
+        stdout: false,
+        test: 123,
+	},
+});
+console.log('get env', getEnv());
+
+// require deps
+const _ = require('lodash');
+const logUpdate = require('log-update');
+const http = require('../sdk/lib/http');
+const Level2 = require('../sdk/com/level2');
 
 const SYMBOL = 'XBTUSDM';
 

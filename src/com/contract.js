@@ -4,7 +4,7 @@
 import http from '../lib/http';
 import log from '../lib/log';
 
-const IS_PRODUCT = process.env.PRODUCTION === 'true';
+const IS_PRODUCT = global._USE_KUMEX_ONLINE_ || process.env.PRODUCTION === 'true';
 const baseUrl = IS_PRODUCT ? 'https://kitchen.kumex.top' : 'https://kitchen-sdb.kumex.com';
 
 class Contract {

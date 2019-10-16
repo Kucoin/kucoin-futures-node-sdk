@@ -19,10 +19,12 @@ class Log {
         }
 
         const nowTime = moment().format('YYYY-MM-DD_HH:mm:ss');
+        const logFile = path.resolve(__dirname, `../../logs/${nowTime}.log`);
+        console.log(logFile);
         log4js.configure({
             appenders: {
                 out: { type: 'stdout' },
-                writeFile: { type: 'file', filename: path.resolve(__dirname, `../../logs/${nowTime}.log`) }
+                writeFile: { type: 'file', filename: logFile }
             },
             categories: {
                 default: {
