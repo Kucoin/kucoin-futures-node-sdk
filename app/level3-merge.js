@@ -22,13 +22,13 @@ async function main() {
     
         // show Level3
         let asksStr = '';
-        _.eachRight(orderbook.asks, ([price, size]) => {
-            asksStr += `${price} -> ${size}\n`;
+        _.eachRight(orderbook.asks, ([price, [size, orderIdMp]]) => {
+            asksStr += `${price} -> ${size} -> ${JSON.stringify(Object.keys(orderIdMp))}\n`;
         });
 
         let bidsStr = '';
-        _.each(orderbook.bids, ([price, size]) => {
-            bidsStr += `${price} -> ${size}\n`;
+        _.each(orderbook.bids, ([price, [size, orderIdMp]]) => {
+            bidsStr += `${price} -> ${size} -> ${JSON.stringify(Object.keys(orderIdMp))}\n`;
         });
 
         logUpdate.clear();

@@ -47,8 +47,8 @@ export const mapArr = (arr = [], parseKey = (str) => str) => {
 // ----> for level2
 export const arrMap = (map = {}, order = 'asc') => {
     const res = [];
-    _.each(map, (size, price) => {
-        res.push([price, size]);
+    _.each(map, (value, key) => {
+        res.push([key, value]);
     });
     res.sort((a, b) => {
         if (order === 'desc') {

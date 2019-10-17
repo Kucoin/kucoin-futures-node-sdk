@@ -330,22 +330,24 @@ class Level3 {
 
         const asks = arrl3Map(this.fullSnapshot.asks, 'asks', 'asc');
         const asksTmp = {};
-        _.each(asks, ([price, size]) => {
+        _.each(asks, ([price, size, ts, orderId]) => {
             if (asksTmp[price]) {
-                asksTmp[price] += (+size);
+                asksTmp[price][0] += (+size);
+                asksTmp[price][1][orderId] = true;
             } else {
-                asksTmp[price] = (+size);
+                asksTmp[price] = [(+size), { [orderId]: true }];
             }
         });
         const finalAsks = arrMap(asksTmp, 'asc').slice(0, limit);
 
         const bids = arrl3Map(this.fullSnapshot.bids, 'bids', 'desc');
         const bidsTmp = {};
-        _.each(bids, ([price, size]) => {
+        _.each(bids, ([price, size, ts, orderId]) => {
             if (bidsTmp[price]) {
-                bidsTmp[price] += (+size);
+                bidsTmp[price][0] += (+size);
+                bidsTmp[price][1][orderId] = true;
             } else {
-                bidsTmp[price] = (+size);
+                bidsTmp[price] = [(+size), { [orderId]: true }];
             }
         });
         const finalBids = arrMap(bidsTmp, 'desc').slice(0, limit);
