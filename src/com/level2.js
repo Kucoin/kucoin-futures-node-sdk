@@ -40,23 +40,13 @@ class Level2 {
             const [price, type, size] = change.split(',');
             const seq = this.fullSnapshot.sequence;
             // log('check', sequence, seq);
+            const messageFormat = [sequence, price, type, size];
             if (this.fullSnapshot.dirty === false && sequence === seq + 1) {
                 // update
-                const targetType = targetTypesMap[type];
-                if (_.indexOf(changeTypes, targetType) > -1) {
-                    const targetPrice = mergeDepth(price, targetType);
-                    if (size == 0) {
-                        delete this.fullSnapshot[targetType][targetPrice];
-                    } else {
-                        this.fullSnapshot[targetType][targetPrice] = size;
-                    }
-                    this.fullSnapshot.sequence = sequence;
-                } else {
-                    log('invalid type', type);
-                }
+                this.updateFullByMessage(messageFormat);
             } else
             if (sequence > seq) {
-                this.buffer.push([sequence, price, type, size]);
+                this.buffer.push(messageFormat);
                 // rebuild
                 this.rebuild();
             }
@@ -101,19 +91,8 @@ class Level2 {
                 if (continu) {
                     log('seq & len', this.fullSnapshot.sequence, bufferArr.length, this.buffer.length);
                     _.each(bufferArr, (item) => {
-                        const [sequence, price, type, size] = item;
-                        const targetType = targetTypesMap[type];
-                        if (_.indexOf(changeTypes, targetType) > -1) {
-                            const targetPrice = mergeDepth(price, targetType);
-                            if (size == 0) {
-                                delete this.fullSnapshot[targetType][targetPrice];
-                            } else {
-                                this.fullSnapshot[targetType][targetPrice] = size;
-                            }
-                            this.fullSnapshot.sequence = sequence;
-                        } else {
-                            log('invalid type', type);
-                        }
+                        // update
+                        this.updateFullByMessage(item);
                     });
                     this.fullSnapshot.dirty = false;
                     this.buffer = [];
@@ -157,6 +136,24 @@ class Level2 {
             log('fetch level2 error', e);
         }
         return fetchSuccess;
+    }
+
+    updateFullByMessage = (message) => {
+        const [sequence, price, type, size] = message;
+        const targetType = targetTypesMap[type];
+        if (_.indexOf(changeTypes, targetType) > -1) {
+            const targetPrice = mergeDepth(price, targetType);
+            if (size == 0) {
+                delete this.fullSnapshot[targetType][targetPrice];
+            } else {
+                this.fullSnapshot[targetType][targetPrice] = size;
+            }
+            this.fullSnapshot.sequence = sequence;
+
+            // TODO message event
+        } else {
+            log('invalid change type', type);
+        }
     }
 
     /** public */
