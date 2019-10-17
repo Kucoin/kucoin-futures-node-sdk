@@ -24,6 +24,7 @@ class Level3 {
         asks: {}, // price => orderId => item
         bids: {},
     };
+    messageEventCallback;
 
     constructor(symbol, datafeed) {
         this.symbol = symbol;
@@ -152,7 +153,7 @@ class Level3 {
                     "clientOid": "ad123ad"                  // 可选，用于用户鉴别自己的订单
                 */
                 {
-                    // TODO received event
+                    // received event
                 }
             break;
             case 'open':
@@ -169,7 +170,7 @@ class Level3 {
                     "clientOid": "ad123ad"                  // 可选，用于用户鉴别自己的订单
                 */
                 {
-                    // TODO open event
+                    // open event
                     const { side, orderId, price, size, orderTime, ts } = message;
                     const targetType = targetTypesMap[side];
                     if (_.indexOf(changeTypes, targetType) > -1) {
@@ -196,7 +197,7 @@ class Level3 {
                     "ts": 1547697294838004923               // 成交时间 - 纳秒
                 */
                 {
-                    // TODO match event
+                    // match event
                     const { side, makerOrderId, size } = message;
                     const targetType = targetTypesMap[side];
                     if (_.indexOf(changeTypes, targetType) > -1) {
@@ -222,7 +223,7 @@ class Level3 {
                     "ts": 1547697294838004923               // 更新时间 - 纳秒
                 */
                 {
-                    // TODO update event
+                    // update event
                     const { orderId, size } = message;
                     if (this.fullSnapshot.asks[orderId]) {
                         if (size <= 0) {
@@ -251,7 +252,7 @@ class Level3 {
                     "clientOid": "ad123ad"                  // 可选，用于用户鉴别自己的订单
                 */
                 {
-                    // TODO done event
+                    // done event
                     const { orderId } = message;
                     if (this.fullSnapshot.asks[orderId]) {
                         delete this.fullSnapshot.asks[orderId];
@@ -271,6 +272,11 @@ class Level3 {
 
         if (updated) {
             this.fullSnapshot.sequence = sequence;
+
+            // callback message
+            if (typeof this.messageEventCallback === 'function') {
+                this.messageEventCallback(message);
+            }
         }
     }
 
@@ -292,9 +298,14 @@ class Level3 {
         this.rebuild();
     }
 
-    // TOOD message event handler
+    // message event handler
+    handleMessageEvent = (callback) => {
+        if (typeof callback === 'function') {
+            this.messageEventCallback = callback;
+        }
+    }
 
-    // TODO get order book
+    // get detail order book
     getDetailOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
         const sequence = this.fullSnapshot.sequence;
@@ -311,6 +322,7 @@ class Level3 {
         };
     }
 
+    // get merged order book
     getOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
         const sequence = this.fullSnapshot.sequence;

@@ -23,6 +23,7 @@ class Level2 {
         asks: {},
         bids: {},
     };
+    messageEventCallback;
 
     constructor(symbol, datafeed) {
         this.symbol = symbol;
@@ -150,7 +151,10 @@ class Level2 {
             }
             this.fullSnapshot.sequence = sequence;
 
-            // TODO message event
+            // callback message
+            if (typeof this.messageEventCallback === 'function') {
+                this.messageEventCallback(message);
+            }
         } else {
             log('invalid change type', type);
         }
@@ -174,7 +178,12 @@ class Level2 {
         this.rebuild();
     }
 
-    // TODO message event handler
+    // message event handler
+    handleMessageEvent = (callback) => {
+        if (typeof callback === 'function') {
+            this.messageEventCallback = callback;
+        }
+    }
 
     getOrderBook = (limit = 10) => {
         const dirty = this.fullSnapshot.dirty;
