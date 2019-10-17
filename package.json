@@ -1,6 +1,6 @@
 {
   "name": "kumex-node-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "KuMEX API SDK for Node.js language",
   "repository": {
     "type": "git",
