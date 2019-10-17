@@ -1,8 +1,11 @@
 {
   "name": "kumex-node-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "KuMEX API SDK for Node.js language",
-  "registory": "git@github.com:Kucoin/kumex-node-sdk.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Kucoin/kumex-node-sdk.git"
+  },
   "main": "sdk/index.js",
   "files": [
     "sdk",
