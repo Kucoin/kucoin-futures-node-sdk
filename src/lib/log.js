@@ -1,3 +1,5 @@
+const process = require('process');
+
 import log4js from 'log4js';
 import path from 'path';
 import moment from 'moment';
@@ -8,8 +10,9 @@ const LOG_TYPES = ['warn', 'info', 'debug', 'error'];
 
 class Log {
     constructor() {
-        const { writeFile, stdout } = configure.log || {};
+        const { writeFile, stdout, logFolder } = configure.log || {};
         this.writeFile = writeFile;
+        this.logFolder = logFolder;
         this.stdout = stdout;
     }
 
@@ -19,8 +22,14 @@ class Log {
         }
 
         const nowTime = moment().format('YYYY-MM-DD_HH:mm:ss');
-        const logFile = path.resolve(__dirname, `../../logs/${nowTime}.log`);
-        console.log(logFile);
+        let logFile;
+        if (this.logFolder) {
+            logFile = path.resolve(this.logFolder, `./${nowTime}.log`);
+        } else {
+            const cwd = process.cwd();
+            logFile = path.resolve(cwd, `./logs/${nowTime}.log`);
+        }
+        console.log('log file', logFile);
         log4js.configure({
             appenders: {
                 out: { type: 'stdout' },

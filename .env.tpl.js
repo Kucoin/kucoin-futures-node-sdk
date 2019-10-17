@@ -1,6 +1,7 @@
 export default {
 	log: {
 		writeFile: true,
+		logFolder: '',
 		stdout: false,
 	},
 	key: '[你的 api key]',
