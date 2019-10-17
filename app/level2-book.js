@@ -16,7 +16,7 @@ async function main() {
     const l2 = new Level2(SYMBOL);
     l2.listen();
 
-    const interval = setInterval(async () => {
+    l2.handleMessageEvent(() => {
         // read orderbook
         const orderbook = l2.getOrderBook(5);
     
@@ -40,7 +40,7 @@ async function main() {
             `${asksStr}----------sep-----------\n` +
             `${bidsStr}------------------------`
         );
-    }, 200);
+    });
 }
 
 main();
