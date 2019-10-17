@@ -2,7 +2,11 @@
   "name": "kumex-node-sdk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "sdk/index.js",
+  "files": [
+    "sdk",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "PRODUCTION=false nodemon src/start.js",
