@@ -1,4 +1,4 @@
-# Node Helper for KuMEX Strategy
+# Node Helper for KuCoin Futures Strategy
 ## Usage As Framework Helper:    
 
 ### Clone and Dep
@@ -65,10 +65,10 @@ yarn link
 ### use package
 ```
 # use yarn
-yarn add kumex-node-sdk
+yarn add kucoin-futures-node-sdk
 
 # or use npm
-npm install kumex-node-sdk
+npm install kucoin-futures-node-sdk
 ```
 
 ### use SDK

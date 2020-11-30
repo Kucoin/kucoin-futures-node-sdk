@@ -1,10 +1,10 @@
 {
-  "name": "kumex-node-sdk",
+  "name": "kucoin-futures-node-sdk",
   "version": "1.0.2",
-  "description": "KuMEX API SDK for Node.js language",
+  "description": "KuCoin Futures API SDK for Node.js language",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Kucoin/kumex-node-sdk.git"
+    "url": "git@github.com:Kucoin/kucoin-futures-node-sdk.git"
   },
   "main": "sdk/index.js",
   "files": [
