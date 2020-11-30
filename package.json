@@ -1,6 +1,6 @@
 {
   "name": "kucoin-futures-node-sdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "KuCoin Futures API SDK for Node.js language",
   "repository": {
     "type": "git",
