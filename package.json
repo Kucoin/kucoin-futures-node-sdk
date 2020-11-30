@@ -22,10 +22,11 @@
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "decimal.js": "^10.2.0",
+    "dot-prop": "^4.2.1",
     "event-emitter": "^0.3.5",
     "koa": "^2.8.1",
     "koa-bodyparser": "^4.2.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "log-update": "^3.3.0",
     "log4js": "^5.1.0",
     "moment": "^2.24.0",
