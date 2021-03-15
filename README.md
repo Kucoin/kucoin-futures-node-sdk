@@ -17,7 +17,8 @@ copy .env.tpl.js .env.js
 export default {
 	key: '[Your api key]',
 	secret: '[Your api secret]',
-	passphrase: '[Your api passphrase]'
+	passphrase: '[Your api passphrase]',
+	keyVersion: '[Api key version]', // For v2 API-KEY, not required for v1 version
 }
 ```
 
