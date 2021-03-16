@@ -4,7 +4,8 @@ export default {
 		logFolder: '',
 		stdout: false,
 	},
-	key: '[你的 api key]',
-	secret: '[你的 api secret]',
-	passphrase: '[你的 api 密码]',
+	key: '[Your api key]',
+	secret: '[Your api secret]',
+	passphrase: '[Your api passphrase]',
+	keyVersion: 2
 }

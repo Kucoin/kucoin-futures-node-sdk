@@ -6,6 +6,10 @@ export const targetTypesMap = {
     buy: 'bids',
 };
 
+export const keyVersion2 = (version) => {
+    return version && version === 2;
+};
+
 export const genUUID = (prefix = '')=> {
     return prefix + '__' +uuid();
 };

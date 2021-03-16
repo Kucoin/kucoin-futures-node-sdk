@@ -4,6 +4,7 @@ import request from 'request';
 import CryptoJS  from 'crypto';
 import codes from './codes';
 import log from './log';
+import { keyVersion2 } from './utils';
 
 const IS_PRODUCT = global._USE_KUMEX_ONLINE_ || process.env.PRODUCTION === 'true';
 const baseUrl = IS_PRODUCT ? 'https://api.kumex.com' : 'https://sandbox-api.kumex.com';
@@ -34,6 +35,8 @@ class Http {
     //
   static auth(configs, data = '', secret = '') {
 
+    const isKeyVersion2 = keyVersion2(HttpConfig.signatureConfig.keyVersion);
+
     const timestamp =  Date.now();
 
     const signature = Http.sign(timestamp + configs.method.toUpperCase() + configs.url + data, secret);
@@ -44,7 +47,7 @@ class Http {
     if (!HttpConfig.signatureConfig.passphrase) {
       log('KC-API-PASSPHRASE is not specified');
     }
-    return {
+    const headers = {
     //   ...(configs.headers || {}),
       'KC-API-KEY': HttpConfig.signatureConfig.key || '',
       'KC-API-SIGN': signature,
@@ -52,6 +55,13 @@ class Http {
       'KC-API-PASSPHRASE': HttpConfig.signatureConfig.passphrase || '',
       'Content-Type': 'application/json',
     };
+
+    if (isKeyVersion2) {
+      headers['KC-API-PASSPHRASE'] = Http.sign(HttpConfig.signatureConfig.passphrase || '', secret);
+      headers['KC-API-KEY-VERSION'] = HttpConfig.signatureConfig.keyVersion;
+    };
+
+    return headers;
   }
 
 
