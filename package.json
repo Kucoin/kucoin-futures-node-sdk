@@ -28,7 +28,7 @@
     "koa-bodyparser": "^4.2.1",
     "lodash": "^4.17.19",
     "log-update": "^3.3.0",
-    "log4js": "^5.1.0",
+    "log4js": "^6.4.0",
     "moment": "^2.24.0",
     "qs": "^6.9.0",
     "querystring": "^0.2.0",
