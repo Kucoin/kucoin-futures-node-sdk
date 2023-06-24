@@ -1,0 +1,63 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "require": false,
+    "export": false,
+    "import": false
+  },
+  "rules": {
+    "generator-star-spacing": [0],
+    "camelcase": [0],
+    "consistent-return": [0],
+    "global-require": [0],
+    "import/prefer-default-export": [0],
+    "no-underscore-dangle": [0],
+    "no-else-return": [0],
+    "no-restricted-syntax": [0],
+    "no-use-before-define": [0],
+    "no-nested-ternary": [0],
+    "arrow-body-style": [0],
+    "import/extensions": [0],
+    "max-len": [
+      2,
+      {
+        "code": 200,
+        "tabWidth": 2,
+        "ignorePattern": "^\\s*[<svg|<path].+>",
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreComments": true
+      }
+    ],
+    "no-bitwise": [0],
+    "no-cond-assign": [0],
+    "import/no-unresolved": [0],
+    "require-yield": [0],
+    "no-constant-condition": [0],
+    "no-console": [0],
+    "no-script-url": [0],
+    "no-param-reassign": [0],
+    "no-restricted-properties": [0],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "object-curly-newline": [0],
+    "@typescript-eslint/no-unused-vars": 1
+  }
+}
