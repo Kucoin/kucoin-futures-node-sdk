@@ -74,7 +74,7 @@ futuresSDK.futuresStatus(console.log);
 //   console.log
 // );
 
-futuresSDK.futuresSubApi({ subName: 'khan002' }, console.log);
+// futuresSDK.futuresSubApi({ subName: '' }, console.log);
 
 // futuresSDK.futuresCreateSubApi(
 //   {

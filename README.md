@@ -96,7 +96,7 @@ futuresSDK.futuresTransactionHistory(
 #### Get Sub-Account Futures API List
 
 ```js
-futuresSDK.futuresSubApi({ subName: 'testSDK' }, console.log);
+futuresSDK.futuresSubApi({ subName: '' }, console.log);
 ```
 
 #### Create Futures APIs for Sub-Account
