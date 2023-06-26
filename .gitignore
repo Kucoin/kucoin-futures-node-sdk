@@ -1,75 +1,64 @@
-# File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
 
-# Created by https://www.gitignore.io/api/macos,visualstudiocode,git
-# Edit at https://www.gitignore.io/?templates=macos,visualstudiocode,git
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
 
-### Git ###
-# Created by git for backups. To disable backups in Git:
-# $ git config --global mergetool.keepBackup false
-*.orig
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
 
-# Created by git when using merge tools for conflicts
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-*_BACKUP_*.txt
-*_BASE_*.txt
-*_LOCAL_*.txt
-*_REMOTE_*.txt
-
-### macOS ###
-# General
+# OS generated files #
+######################
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must end with two \r
-Icon
-
-# Thumbnails
+.DS_Store?
 ._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
 .Spotlight-V100
-.TemporaryItems
 .Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+ehthumbs.db
+Thumbs.db
+～/Desktop
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Secrets #
+###########
+.secret
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# Node #
+########
+node_modules
 
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
+# Yarn #
+########
+*.lock
 
-# End of https://www.gitignore.io/api/macos,visualstudiocode,git
+# VSCode #
+##########
+.vscode
 
-# Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
+# IntelliJ #
+##########
+.idea
 
-*-error.log
-node_modules/
-.env.js
-pm2.json
-/app/*
-!app/.gitkeep
-!app/template.js
-!app/level3-full.js
-!app/level3-merge.js
-!app/level2-book.js
-/logs
-/sdk
+# code coverage"
+coverage
+
+./*.js
+env.local.js
