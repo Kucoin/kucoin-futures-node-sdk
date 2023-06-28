@@ -56,7 +56,7 @@ yarn add kucoin-futures-node-sdk
 
 ```js
 /** Require SDK */
-const KuCoinFutures = require('kucoin-futures-node-sdk');
+const KuCoinFutures = require('kucoin-futures-node-sdk').default;
 const futuresSDK = new KuCoinFutures({
   key: '', // KC-API-KEY
   secret: '', // API-Secret
