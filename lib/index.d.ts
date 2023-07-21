@@ -11,6 +11,7 @@ export default class KuCoinFutures {
     });
     private makeRequest;
     futuresAccount: (currency?: string, callback?: Function) => Promise<any>;
+    futuresAccountOverview: (currency?: string, callback?: Function) => Promise<any>;
     /**
      * search to transaction history
      * @param params.type string  -- 'RealisedPNL' | 'Deposit' | 'Withdrawal' | 'TransferIn' | 'TransferOut'
@@ -212,18 +213,28 @@ export default class KuCoinFutures {
     futuresGetCacheSocketInstance: (isPrivate: boolean) => Promise<WebSocketClient>;
     futuresSocketSubscribe: (topic: string, callback?: Callback, isPrivate?: boolean, strict?: boolean) => Promise<false | undefined>;
     get websocket(): {
-        tickerV2: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        ticker: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        execution: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2Depth5: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2Depth50: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        instrument: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        tickerV2: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        ticker: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        execution: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2Depth5: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2Depth50: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        instrument: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
         announcement: (callback?: (d: any) => void) => Promise<false | undefined>;
-        snapshot: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        tradeOrders: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        snapshot: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        tradeOrders: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
         advancedOrders: (callback?: (d: any) => void) => Promise<false | undefined>;
         wallet: (callback?: (d: any) => void) => Promise<false | undefined>;
-        position: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        position: (symbols: string | [
+        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
     };
 }

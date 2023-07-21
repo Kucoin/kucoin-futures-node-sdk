@@ -1,4 +1,5 @@
 export declare const FUTURES_ACCOUNT_OVERVIEW_EP = "/api/v1/account-overview";
+export declare const FUTURES_ACCOUNT_OVERVIEW_ALL_EP = "/api/v1/account-overview-all";
 export declare const FUTURES_TRANSACTION_HISTORY_EP = "/api/v1/transaction-history";
 export declare const FUTURES_SUB_API_EP = "/api/v1/sub/api-key";
 export declare const FUTURES_UPDATE_SUB_API_EP = "/api/v1/sub/api-key/update";

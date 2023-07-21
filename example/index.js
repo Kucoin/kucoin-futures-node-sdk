@@ -12,6 +12,8 @@ futuresSDK.futuresStatus(console.log);
 
 // futuresSDK.futuresAccount('USDT', console.log);
 
+futuresSDK.futuresAccountOverview('USDT', console.log);
+
 // futuresSDK.futuresBuy(
 //   {
 //     symbol: 'ETHUSDTM',
