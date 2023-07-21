@@ -75,7 +75,12 @@ const futuresSDK = new KuCoinFutures({
 #### Get Account Overview
 
 ```js
+// Get Account Detail
 futuresSDK.futuresAccount('XBT', console.log);
+
+// Get All Accounts Balance
+futuresSDK.futuresAccountOverview('XBT', console.log);
+
 ```
 
 #### Get Transaction History

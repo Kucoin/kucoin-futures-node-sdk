@@ -40,7 +40,8 @@ import {
   FUTURES_UPDATE_SUB_API_EP,
   FUTURES_TRANSFER_OUT_EP,
   FUTURES_TRANSFER_IN_EP,
-  FUTURES_TRANSFER_LIST_EP
+  FUTURES_TRANSFER_LIST_EP,
+  FUTURES_ACCOUNT_OVERVIEW_ALL_EP
 } from './resetAPI';
 import {
   PUBLIC_BULLET_EP,
@@ -123,6 +124,15 @@ export default class KuCoinFutures {
       body: { currency },
       method: GET,
       endpoint: FUTURES_ACCOUNT_OVERVIEW_EP,
+      callback
+    });
+  };
+
+  futuresAccountOverview = async (currency: string = 'XBT', callback?: Function) => {
+    return this.makeRequest({
+      body: { currency },
+      method: GET,
+      endpoint: FUTURES_ACCOUNT_OVERVIEW_ALL_EP,
       callback
     });
   };
