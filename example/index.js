@@ -12,7 +12,7 @@ futuresSDK.futuresStatus(console.log);
 
 // futuresSDK.futuresAccount('USDT', console.log);
 
-futuresSDK.futuresAccountOverview('USDT', console.log);
+// futuresSDK.futuresAccountOverview('USDT', console.log);
 
 // futuresSDK.futuresBuy(
 //   {
@@ -32,17 +32,17 @@ futuresSDK.futuresAccountOverview('USDT', console.log);
 // futuresSDK.futuresSell(
 //   {
 //     symbol: 'ETHUSDTM',
-//     price: 20000,
-//     leverage: 5,
+//     price: 3000,
+//     leverage: 15,
 //     size: 1,
 //     // clientOid: uuidV4(),
-//     optional: {
-//       remark: 'test',
-//       stop: 'up',
-//       stopPriceType: 'TP',
-//       stopPrice: '20000',
-//       // ...
-//     }
+//     // optional: {
+//     //   remark: 'test',
+//     //   stop: 'up',
+//     //   stopPriceType: 'TP',
+//     //   stopPrice: '20000',
+//     //   // ...
+//     // }
 //   },
 //   console.log
 // );
@@ -55,7 +55,15 @@ futuresSDK.futuresAccountOverview('USDT', console.log);
 
 // futuresSDK.futuresCancelAll('ETHUSDTM', console.log);
 
-// futuresSDK.futuresOpenOrders({ status: 'done' }, console.log);
+// futuresSDK.futuresCancelOrderByClientOid(
+//   'ETHUSDTM',
+//   'clientId',
+//   console.log
+// );
+
+// futuresSDK.futuresOpenOrders({ status: 'active' }, (data) =>
+//   console.log(JSON.stringify(data))
+// );
 
 // futuresSDK.futuresStopOrders({ type: 'market' }, console.log);
 
@@ -178,6 +186,14 @@ futuresSDK.futuresAccountOverview('USDT', console.log);
 //   },
 //   console.log
 // );
+
+// futuresSDK.futuresFundingRates({
+//   symbol: 'XBTUSDTM',
+//   from: '1700310700000',
+//   to: '1702310700000',
+// }, console.log);
+
+// futuresSDK.futuresTradeStatistics(console.log);
 
 // === websocket === //
 
