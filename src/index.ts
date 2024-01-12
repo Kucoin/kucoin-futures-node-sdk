@@ -9,6 +9,7 @@ import {
   returnBodyAndEndpoint,
   FUTURES_STOP_ORDER_EP,
   FUTURES_RECENT_DONE_ORDERS_EP,
+  FUTURES_ORDER_CLIENT_ORDER_EP,
   FUTURES_FILLS_EP,
   FUTURES_RECENT_FILLS_EP,
   FUTURES_TOTAL_OPEN_ORDERS_MARGIN_EP,
@@ -29,6 +30,7 @@ import {
   FUTURES_TIMESTAMP_EP,
   FUTURES_SERVICE_STATUS_EP,
   FUTURES_KLINE_EP,
+  FUTURES_TRADE_STATISTICS_EP,
   FUTURES_INTEREST_EP,
   FUTURES_INDEX_EP,
   FUTURES_MARK_PRICE_EP,
@@ -41,7 +43,8 @@ import {
   FUTURES_TRANSFER_OUT_EP,
   FUTURES_TRANSFER_IN_EP,
   FUTURES_TRANSFER_LIST_EP,
-  FUTURES_ACCOUNT_OVERVIEW_ALL_EP
+  FUTURES_ACCOUNT_OVERVIEW_ALL_EP,
+  FUTURES_FUNDING_RATES_EP
 } from './resetAPI';
 import {
   PUBLIC_BULLET_EP,
@@ -74,7 +77,8 @@ import {
   UpdateSubApiParams,
   IndexListParams,
   klineParams,
-  Callback
+  Callback,
+  FundingRatesParams
 } from './dataType';
 import { WebSocketClient, CONNECT_ID, TICKER_V2 } from './websocket';
 
@@ -128,7 +132,10 @@ export default class KuCoinFutures {
     });
   };
 
-  futuresAccountOverview = async (currency: string = 'XBT', callback?: Function) => {
+  futuresAccountOverview = async (
+    currency: string = 'XBT',
+    callback?: Function
+  ) => {
     return this.makeRequest({
       body: { currency },
       method: GET,
@@ -370,6 +377,19 @@ export default class KuCoinFutures {
     return Promise.all([cancelAllOpenOrders, cancelAllStopOrders]);
   };
 
+  futuresCancelOrderByClientOid = async (
+    symbol: string,
+    clientOid: string,
+    callback?: Function
+  ) => {
+    return this.makeRequest({
+      body: '',
+      method: DELETE,
+      endpoint: `${FUTURES_ORDER_CLIENT_ORDER_EP}/${clientOid}?symbol=${symbol}`,
+      callback
+    });
+  };
+
   /**
    * search to open orders list
    * @param params.status --'active'|'done' default 'active'
@@ -563,6 +583,35 @@ export default class KuCoinFutures {
     });
   };
 
+  /**
+   * search to stop orders list
+   * @param params.symbol -- string symbol
+   * @param params.startAt -- timestamp
+   * @param params.endAt -- timestamp
+   * @param callback -- callback function
+   */
+  futuresFundingRates = async (
+    params?: FundingRatesParams,
+    callback?: Function
+  ) => {
+    return this.makeRequest({
+      body: params,
+      method: GET,
+      endpoint: FUTURES_FUNDING_RATES_EP,
+      callback,
+      isPrivate: false
+    });
+  };
+
+  futuresFundingRate = async (symbol: string, callback?: Function) => {
+    return this.makeRequest({
+      method: GET,
+      endpoint: `${FUTURES_FUNDING_RATE_EP}/${symbol}/current`,
+      callback,
+      isPrivate: false
+    });
+  };
+
   futuresContractsActive = async (callback?: Function) => {
     return this.makeRequest({
       method: GET,
@@ -670,6 +719,14 @@ export default class KuCoinFutures {
     });
   };
 
+  futuresTradeStatistics = async (callback?: Function) => {
+    return this.makeRequest({
+      method: GET,
+      endpoint: FUTURES_TRADE_STATISTICS_EP,
+      callback
+    });
+  };
+
   /**
    * search to interest list
    * @param params.symbol -- string symbol
@@ -737,15 +794,6 @@ export default class KuCoinFutures {
       body: params,
       method: GET,
       endpoint: FUTURES_PREMIUM_EP,
-      callback,
-      isPrivate: false
-    });
-  };
-
-  futuresFundingRate = async (symbol: string, callback?: Function) => {
-    return this.makeRequest({
-      method: GET,
-      endpoint: `${FUTURES_FUNDING_RATE_EP}/${symbol}/current`,
       callback,
       isPrivate: false
     });

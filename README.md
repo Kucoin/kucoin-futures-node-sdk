@@ -1,6 +1,6 @@
 # KuCoin Futures Node SDK
 
-[![KuCoin Futures Node SDK](https://docs.kucoin.com/futures/images/logo_en.svg)](https://docs.kucoin.com/futures/#introduction)
+[KuCoin Futures Node SDK](https://docs.kucoin.com/futures/#introduction)
 [![Latest Version](https://img.shields.io/github/release/Kucoin/kucoin-futures-node-sdk.svg?style=flat-square)](https://github.com/Kucoin/kucoin-futures-node-sdk/releases)
 
 - [KuCoin Futures Node SDK](#kucoin-futures-node-sdk)
@@ -35,6 +35,7 @@
       - [Server Time](#server-time)
       - [Server Status](#server-status)
       - [Get K Line Data of Contract](#get-k-line-data-of-contract)
+      - [Get 24hour futures transaction volume](#get-24hour-futures-transaction-volume)
   - [WebSocket](#websocket)
     - [Public Channels](#public-channels)
     - [Private Channels](#private-channels)
@@ -256,6 +257,12 @@ futuresSDK.futuresCancelAllStopOrders('ETHUSDTM', console.log);
 // or cancelAll limit/stop order for symbol
 futuresSDK.futuresCancelAll('ETHUSDTM', console.log);
 
+// Cancel Order by clientOid
+futuresSDK.futuresCancelOrderByClientOid({
+  symbol: '[symbol]',
+  clientOid: '[clientOid]',
+}, console.log);
+
 // Get Order List
 futuresSDK.futuresOpenOrders({ status: 'active' }, console.log);
 
@@ -338,6 +345,17 @@ futuresSDK.futuresChangeRiskLimit(
 #### Funding Fees
 
 ```js
+// Get Current Funding Rate
+futuresSDK.futuresFundingRate('XBTUSDM', console.log);
+
+// Get Public Funding History
+futuresSDK.futuresFundingRates({ 
+  symbol: 'XBTUSDTM', 
+  from: '1700310700000', 
+  to: '1702310700000',
+}, console.log);
+
+// Get Private Funding History
 futuresSDK.futuresFundingHistory({ symbol: 'ETHUSDTM' }, console.log);
 ```
 
@@ -399,9 +417,6 @@ futuresSDK.futuresMarkPrice('XBTUSDM', console.log);
 
 // Get Premium Index
 futuresSDK.futuresPremiums({ symbol: '.XBTUSDMPI' }, console.log);
-
-// Get Current Funding Rate
-futuresSDK.futuresFundingRate('XBTUSDM', console.log);
 ```
 
 #### Server Time
@@ -428,6 +443,13 @@ futuresSDK.futuresKline(
   },
   console.log
 );
+```
+
+#### Get 24hour futures transaction volume
+
+```js
+// need auth
+futuresSDK.futuresTradeStatistics(console.log);
 ```
 
 ---

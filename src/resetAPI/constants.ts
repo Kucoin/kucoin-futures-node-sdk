@@ -15,6 +15,7 @@ export const FUTURES_TRANSFER_LIST_EP = '/api/v1/transfer-list';
 export const FUTURES_ORDER_EP = '/api/v1/orders';
 export const FUTURES_STOP_ORDER_EP = '/api/v1/stopOrders';
 export const FUTURES_RECENT_DONE_ORDERS_EP = '/api/v1/recentDoneOrders';
+export const FUTURES_ORDER_CLIENT_ORDER_EP = '/api/v1/orders/client-order';
 
 // fills endpoint
 export const FUTURES_FILLS_EP = '/api/v1/fills';
@@ -30,10 +31,15 @@ export const FUTURES_POSITION_AUTO_DEPOSIT_STATUS_EP =
 export const FUTURES_POSITION_MARGIN_EP =
   '/api/v1/position/margin/deposit-margin';
 
-// other endpoint
+// risk limit endpoint
 export const FUTURES_RISK_LIMIT_EP = '/api/v1/contracts/risk-limit';
 export const FUTURES_CHANGE_RISK_LIMIT_EP = '/api/v1/position/risk-limit-level/change';
+
+// funding fees endpoint
+export const FUTURES_FUNDING_RATE_EP = '/api/v1/funding-rate';
 export const FUTURES_FUNDING_HISTORY_EP = '/api/v1/funding-history';
+export const FUTURES_FUNDING_RATES_EP = '/api/v1/contract/funding-rates';
+
 
 // market endpoint
 export const FUTURES_CONTRACTS_ACTIVE_EP = '/api/v1/contracts/active';
@@ -47,7 +53,7 @@ export const FUTURES_INTEREST_EP = '/api/v1/interest/query';
 export const FUTURES_INDEX_EP = '/api/v1/index/query';
 export const FUTURES_MARK_PRICE_EP = '/api/v1/mark-price';
 export const FUTURES_PREMIUM_EP = '/api/v1/premium/query';
-export const FUTURES_FUNDING_RATE_EP = '/api/v1/funding-rate';
 export const FUTURES_TIMESTAMP_EP = '/api/v1/timestamp';
 export const FUTURES_SERVICE_STATUS_EP = '/api/v1/status';
 export const FUTURES_KLINE_EP = '/api/v1/kline/query';
+export const FUTURES_TRADE_STATISTICS_EP = '/api/v1/trade-statistics';

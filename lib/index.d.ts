@@ -1,4 +1,4 @@
-import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback } from './dataType';
+import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams } from './dataType';
 import { WebSocketClient } from './websocket';
 export default class KuCoinFutures {
     private request;
@@ -79,6 +79,7 @@ export default class KuCoinFutures {
     futuresCancelAllOpenOrders: (symbol?: string, callback?: Function) => Promise<any>;
     futuresCancelAllStopOrders: (symbol?: string, callback?: Function) => Promise<any>;
     futuresCancelAll: (symbol?: string, callback?: Function) => Promise<[any, any]>;
+    futuresCancelOrderByClientOid: (symbol: string, clientOid: string, callback?: Function) => Promise<any>;
     /**
      * search to open orders list
      * @param params.status --'active'|'done' default 'active'
@@ -154,6 +155,15 @@ export default class KuCoinFutures {
      * @param callback -- callback function
      */
     futuresFundingHistory: (params?: FundingHistoryParams, callback?: Function) => Promise<any>;
+    /**
+     * search to stop orders list
+     * @param params.symbol -- string symbol
+     * @param params.startAt -- timestamp
+     * @param params.endAt -- timestamp
+     * @param callback -- callback function
+     */
+    futuresFundingRates: (params?: FundingRatesParams, callback?: Function) => Promise<any>;
+    futuresFundingRate: (symbol: string, callback?: Function) => Promise<any>;
     futuresContractsActive: (callback?: Function) => Promise<any>;
     futuresContractDetail: (symbol: string, callback?: Function) => Promise<any>;
     futuresTicker: (symbol: string, callback?: Function) => Promise<any>;
@@ -171,6 +181,7 @@ export default class KuCoinFutures {
      * @param params.to -- boolean
      */
     futuresKline: (params: klineParams, callback?: Function) => Promise<any>;
+    futuresTradeStatistics: (callback?: Function) => Promise<any>;
     /**
      * search to interest list
      * @param params.symbol -- string symbol
@@ -208,7 +219,6 @@ export default class KuCoinFutures {
      * @param callback -- callback function
      */
     futuresPremiums: (params?: IndexListParams, callback?: Function) => Promise<any>;
-    futuresFundingRate: (symbol: string, callback?: Function) => Promise<any>;
     futuresGetSocketInstance: (isPrivate: boolean) => Promise<WebSocketClient>;
     futuresGetCacheSocketInstance: (isPrivate: boolean) => Promise<WebSocketClient>;
     futuresSocketSubscribe: (topic: string, callback?: Callback, isPrivate?: boolean, strict?: boolean) => Promise<false | undefined>;
