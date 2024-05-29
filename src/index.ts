@@ -44,7 +44,8 @@ import {
   FUTURES_TRANSFER_IN_EP,
   FUTURES_TRANSFER_LIST_EP,
   FUTURES_ACCOUNT_OVERVIEW_ALL_EP,
-  FUTURES_FUNDING_RATES_EP
+  FUTURES_FUNDING_RATES_EP,
+  FUTURES_ORDER_MULTI_EP
 } from './resetAPI';
 import {
   PUBLIC_BULLET_EP,
@@ -78,7 +79,8 @@ import {
   IndexListParams,
   klineParams,
   Callback,
-  FundingRatesParams
+  FundingRatesParams,
+  MultiOrderBody
 } from './dataType';
 import { WebSocketClient, CONNECT_ID, TICKER_V2 } from './websocket';
 
@@ -282,6 +284,15 @@ export default class KuCoinFutures {
     return this.makeRequest({ body, method, endpoint, callback });
   };
 
+  private orderTest = async (
+    params: any,
+    method = GET,
+    callback?: Function
+  ) => {
+    const { body, endpoint } = returnBodyAndEndpoint(params, method, true);
+    return this.makeRequest({ body, method, endpoint, callback });
+  };
+
   private stopOrder = async (
     params: any,
     method = GET,
@@ -351,6 +362,75 @@ export default class KuCoinFutures {
       POST,
       callback
     );
+  };
+
+  // Place Order Test, After placing an order, the order will not enter the matching system, and the order cannot be queried.
+  futuresBuyTest = async (
+    params: {
+      symbol: string;
+      size: string | number;
+      price: string | number;
+      leverage?: number;
+      clientOid?: string;
+      optional?: object;
+    },
+    callback?: Function
+  ) => {
+    const {
+      price,
+      symbol,
+      size,
+      leverage = 1,
+      clientOid = uuidV4(),
+      optional
+    } = params;
+    if (!symbol) {
+      throw new TypeError('Order buy symbol must be set!');
+    }
+    return this.orderTest(
+      { side: 'buy', price, symbol, size, leverage, clientOid, optional },
+      POST,
+      callback
+    );
+  };
+
+  // Place Order Test, After placing an order, the order will not enter the matching system, and the order cannot be queried.
+  futuresSellTest = async (
+    params: {
+      symbol: string;
+      size: string | number;
+      price: string | number;
+      leverage?: number;
+      clientOid?: string;
+      optional?: object;
+    },
+    callback?: Function
+  ) => {
+    const {
+      price,
+      symbol,
+      size,
+      leverage = 1,
+      clientOid = uuidV4(),
+      optional
+    } = params;
+    if (!symbol) {
+      throw new TypeError('Order sell symbol must be set!');
+    }
+    return this.orderTest(
+      { side: 'sell', price, symbol, size, leverage, clientOid, optional },
+      POST,
+      callback
+    );
+  };
+
+  futuresOrderMulti = async (params: Array<MultiOrderBody>, callback?: Function) => {
+    return this.makeRequest({
+      body: params, 
+      method: POST,
+      endpoint: FUTURES_ORDER_MULTI_EP,
+      callback
+    });
   };
 
   futuresCancel = async (orderId: string, callback?: Function) => {

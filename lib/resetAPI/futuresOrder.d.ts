@@ -17,9 +17,10 @@ export declare const makeFuturesOrderBody: ({ side, symbol, size, price, leverag
  * return futures order make body and endpoint
  * @param {any} params。
  * @param {string} method - DEFAULT 'GET'。
+ * @param {boolean} isTest - DEFAULT false
  * @returns {Object} return { body, endpoint }。
  */
-declare const returnBodyAndEndpoint: (params: any, method?: string) => {
+declare const returnBodyAndEndpoint: (params: any, method?: string, isTest?: boolean) => {
     body: any;
     endpoint: string;
 };

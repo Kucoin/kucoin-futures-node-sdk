@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import https from 'https';
 
 import { makeQueryString, cryptoHmac } from './tools';
-import { TIME_OUT, PROD_ADDR_EP, SANDBOX_ADDR_EP } from './constants';
+import { TIME_OUT, PROD_ADDR_EP } from './constants';
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
@@ -79,18 +79,16 @@ export default class Request {
     key: string | number;
     secret: string | number;
     passphrase: string | number;
-    env?: string;
     version?: string | number;
   }) {
     const {
-      env = 'prod',
       key = '',
       secret,
       passphrase = '',
       version = 2,
       ...other
     } = props || {};
-    const baseURL = env === 'prod' ? PROD_ADDR_EP : SANDBOX_ADDR_EP;
+    const baseURL = PROD_ADDR_EP;
 
     this.axiosInstance = axios.create({
       baseURL,

@@ -1,4 +1,4 @@
-import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams } from './dataType';
+import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams, MultiOrderBody } from './dataType';
 import { WebSocketClient } from './websocket';
 export default class KuCoinFutures {
     private request;
@@ -58,6 +58,7 @@ export default class KuCoinFutures {
      */
     futureTransfers: (params?: TransferListParams, callback?: Function) => Promise<any>;
     private order;
+    private orderTest;
     private stopOrder;
     futuresBuy: (params: {
         symbol: string;
@@ -75,6 +76,23 @@ export default class KuCoinFutures {
         clientOid?: string | undefined;
         optional?: object | undefined;
     }, callback?: Function) => Promise<any>;
+    futuresBuyTest: (params: {
+        symbol: string;
+        size: string | number;
+        price: string | number;
+        leverage?: number | undefined;
+        clientOid?: string | undefined;
+        optional?: object | undefined;
+    }, callback?: Function) => Promise<any>;
+    futuresSellTest: (params: {
+        symbol: string;
+        size: string | number;
+        price: string | number;
+        leverage?: number | undefined;
+        clientOid?: string | undefined;
+        optional?: object | undefined;
+    }, callback?: Function) => Promise<any>;
+    futuresOrderMulti: (params: Array<MultiOrderBody>, callback?: Function) => Promise<any>;
     futuresCancel: (orderId: string, callback?: Function) => Promise<any>;
     futuresCancelAllOpenOrders: (symbol?: string, callback?: Function) => Promise<any>;
     futuresCancelAllStopOrders: (symbol?: string, callback?: Function) => Promise<any>;

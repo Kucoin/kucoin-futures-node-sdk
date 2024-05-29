@@ -1,4 +1,5 @@
 const KuCoinFutures = require('../lib/index').default;
+// const { v4: uuidV4 } = require('uuid');
 
 const futuresSDK = new KuCoinFutures({
   key: '[Your key]',
@@ -15,6 +16,21 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresAccountOverview('USDT', console.log);
 
 // futuresSDK.futuresBuy(
+//   {
+//     symbol: 'ETHUSDTM',
+//     price: 10000,
+//     leverage: 5,
+//     size: 1,
+//     optional: {
+//       stop: 'up',
+//       stopPriceType: 'TP',
+//       stopPrice: '10000'
+//     }
+//   },
+//   console.log
+// );
+
+// futuresSDK.futuresBuyTest(
 //   {
 //     symbol: 'ETHUSDTM',
 //     price: 10000,
@@ -47,6 +63,24 @@ futuresSDK.futuresStatus(console.log);
 //   console.log
 // );
 
+// futuresSDK.futuresSellTest(
+//   {
+//     symbol: 'ETHUSDTM',
+//     price: 3000,
+//     leverage: 15,
+//     size: 1,
+//     // clientOid: uuidV4(),
+//     optional: {
+//       remark: 'test',
+//       stop: 'up',
+//       stopPriceType: 'TP',
+//       stopPrice: '20000',
+//       // ...
+//     }
+//   },
+//   console.log
+// );
+
 // futuresSDK.futuresCancel('orderId', console.log);
 
 // futuresSDK.futuresCancelAllOpenOrders('ETHUSDTM', console.log);
@@ -72,6 +106,30 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresOrderDetail({ clientOid: 'clientOid' }, console.log);
 
 // futuresSDK.futuresOrderDetail('orderId', console.log);
+
+// futuresSDK.futuresOrderMulti(
+//   [
+//     {
+//       clientOid: uuidV4(),
+//       side: 'buy',
+//       symbol: 'ETHUSDTM',
+//       type: 'limit',
+//       price: '10',
+//       size: '1',
+//       leverage: 5
+//     },
+//     {
+//       clientOid: uuidV4(),
+//       side: 'buy',
+//       symbol: 'XBTUSDTM',
+//       type: 'limit',
+//       price: '10',
+//       size: '2',
+//       leverage: 10
+//     }
+//   ],
+//   console.log
+// );
 
 // futuresSDK.futuresTransactionHistory(
 //   {

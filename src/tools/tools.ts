@@ -1,4 +1,5 @@
 import omitBy from 'lodash/omitBy';
+import isArray from 'lodash/isArray';
 import crypto from 'crypto';
 
 /**
@@ -22,7 +23,7 @@ export const makeQueryString = (query: any): string => {
  * @returns filterObj
  */
 export const filterEmptyValues = (obj: any) => {
-  if (typeof obj !== 'object') return obj;
+  if (typeof obj !== 'object' || isArray(obj)) return obj;
   const omitValue = omitBy(
     obj,
     (value) => value === null || value === undefined || value === ''
