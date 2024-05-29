@@ -35,6 +35,28 @@ export interface OrderBody extends BaseOrderBody {
   price?: number | string;
 }
 
+export interface MultiOrderBody {
+  clientOid: string;
+  side: string;
+  symbol: string;
+  leverage: string;
+  price?: number | string;
+  size?: number;
+  type?: string;
+  remark?: string;
+  stop?: string;
+  stopPriceType?: string;
+  stopPrice?: string;
+  reduceOnly?: string;
+  closeOrder?: string;
+  forceHold?: string;
+  timeInForce?: string;
+  postOnly?: string;
+  hidden?: string;
+  iceberg?: string;
+  visibleSize?: string;
+}
+
 export type OpenOrderStatusType = 'active' | 'done';
 export interface OpenOrderListParams extends PageSizeParams {
   status?: OpenOrderStatusType;
@@ -51,7 +73,7 @@ export interface StopOrderListParams extends PageSizeParams {
 
 export interface FillsParams extends PageSizeParams {
   orderId?: string; // List fills for a specific order only (If you specify orderId, other parameters can be ignored)
-  symbol?:string;
+  symbol?: string;
   side?: string;
   type?: OrderType;
 }

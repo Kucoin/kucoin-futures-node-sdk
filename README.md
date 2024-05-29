@@ -20,6 +20,8 @@
       - [Get Transfer-Out Request Records](#get-transfer-out-request-records)
     - [Trade](#trade)
       - [Orders](#orders)
+        - [Place Order Test](#place-order-test)
+        - [Place Multiple Orders](#place-multiple-orders)
       - [Fills](#fills)
       - [Positions](#positions)
       - [Risk Limit Level](#risk-limit-level)
@@ -279,6 +281,113 @@ futuresSDK.futuresOrderDetail({ clientOid: 'clientOid' }, console.log);
 // Or By OrderId
 futuresSDK.futuresOrderDetail('orderId', console.log);
 ```
+
+##### Place Order Test
+> Place Order Test, After placing an order, the order will not enter the matching system, and the order cannot be queried.
+
+```js
+// Place Order Test
+// symbol, price, size, leverage = 1,  clientOid = uuidV4(), optional
+
+// Buy Limit Order
+futuresSDK.futuresBuyTest(
+  {
+    symbol: 'ETHUSDTM',
+    price: 10000,
+    leverage: 5,
+    size: 1
+    // clientOid: uuidV4(),
+  },
+  console.log
+);
+
+// Buy Market Order
+futuresSDK.futuresBuyTest(
+  {
+    symbol: 'ETHUSDTM',
+    leverage: 5,
+    size: 1
+    // clientOid: uuidV4(),
+  },
+  console.log
+);
+
+// Buy Stop Order
+futuresSDK.futuresBuyTest(
+  {
+    symbol: 'ETHUSDTM',
+    price: 10000,
+    leverage: 5,
+    size: 1,
+    // clientOid: uuidV4(),
+    optional: {
+      stop: 'up',
+      stopPriceType: 'TP',
+      stopPrice: '10000'
+      // ...
+    }
+  },
+  console.log
+);
+
+// Sell Order
+// futuresSDK.futuresBuyTest -> futuresSDK.futuresSellTest
+futuresSDK.futuresSellTest(
+  {
+    symbol: 'ETHUSDTM',
+    price: 20000,
+    leverage: 5,
+    size: 1
+    // clientOid: uuidV4(),
+  },
+  console.log
+);
+```
+
+##### Place Multiple Orders
+```js
+//request
+[
+  {
+	  "clientOid":"5c52e11203aa677f33e491",
+	  "side":"buy",
+	  "symbol":"ETHUSDTM",
+	  "type":"limit",
+	  "price":"2150",
+	  "size":"2"
+  },
+  {
+	  "clientOid":"5c52e11203aa677f33e492",
+	  "side":"buy",
+	  "symbol":"XBTUSDTM",
+	  "type":"limit",
+	  "price":"32150",
+	  "size":"2"
+  }
+]
+
+//Response
+[
+  {
+	  "orderId":"80465574458560512",
+	  "clientOid":"5c52e11203aa677f33e491",
+	  "symbol":"ETHUSDTM",
+	  "code":"200000",
+	  "msg":"success"
+  },
+  {
+	  "orderId":"80465575289094144",
+	  "clientOid":"5c52e11203aa677f33e492",
+	  "symbol":"ETHUSDTM",
+	  "code":"200000",
+	  "msg":"success"
+  }
+]
+
+futuresSDK.futuresOrderMulti([...], console.log);
+```
+
+
 
 #### Fills
 

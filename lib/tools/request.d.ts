@@ -32,7 +32,6 @@ export default class Request {
         key: string | number;
         secret: string | number;
         passphrase: string | number;
-        env?: string;
         version?: string | number;
     });
     setSignatureConfig(config?: any): void;

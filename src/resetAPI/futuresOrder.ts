@@ -1,6 +1,6 @@
 import pick from 'lodash/pick';
 
-import { FUTURES_ORDER_EP } from './constants';
+import { FUTURES_ORDER_EP, FUTURES_ORDER_TEST_EP } from './constants';
 
 import { OrderOptionalParamsType, OrderBody } from '../dataType';
 
@@ -125,10 +125,11 @@ export const makeFuturesOrderBody = ({
  * return futures order make body and endpoint
  * @param {any} params。
  * @param {string} method - DEFAULT 'GET'。
+ * @param {boolean} isTest - DEFAULT false
  * @returns {Object} return { body, endpoint }。
  */
-const returnBodyAndEndpoint = (params: any, method = 'GET') => {
-  let endpoint = FUTURES_ORDER_EP;
+const returnBodyAndEndpoint = (params: any, method = 'GET', isTest = false) => {
+  let endpoint = isTest ? FUTURES_ORDER_TEST_EP : FUTURES_ORDER_EP;
   let body = params;
   switch (method) {
     case 'POST': {
