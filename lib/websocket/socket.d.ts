@@ -7,6 +7,7 @@ export default class WebSocketClient {
     private messageHandler;
     private heartbeatInterval;
     private pingTimeout;
+    private subscribeMap;
     subscriptions: Subscription[];
     constructor(url: string, websocket: WebSocket);
     generateId(): string;

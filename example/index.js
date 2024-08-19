@@ -200,6 +200,14 @@ futuresSDK.futuresStatus(console.log);
 //   console.log
 // );
 
+// futuresSDK.futuresMaxWithdrawMargin('DOTUSDTM', console.log);
+
+// futuresSDK.futuresWithdrawMargin({ symbol: 'DOTUSDTM', withdrawAmount: '0.009' }, console.log);
+
+// futuresSDK.futuresHistoryPositions({ symbol: 'ETHUSDTM' }, console.log);
+
+// futuresSDK.futuresMaxOpenPositionSize({ symbol: 'ETHUSDTM', price: '2200', leverage: 5 }, console.log);
+
 // futuresSDK.futuresRiskLimit('ETHUSDTM', console.log);
 
 // futuresSDK.futuresChangeRiskLimit(
@@ -216,6 +224,8 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresContractDetail('XBTUSDTM', console.log);
 
 // futuresSDK.futuresTicker('XBTUSDTM', console.log);
+
+// futuresSDK.futuresAllTicker(console.log);
 
 // futuresSDK.futuresLevel2('XBTUSDTM', console.log);
 
@@ -234,6 +244,8 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresPremiums({ symbol: '.XBTUSDMPI' }, console.log);
 
 // futuresSDK.futuresFundingRate('XBTUSDM', console.log);
+
+// futuresSDK.futuresTradeFees('XBTUSDTM', console.log);
 
 // futuresSDK.futuresKline(
 //   {
@@ -255,6 +267,8 @@ futuresSDK.futuresStatus(console.log);
 
 // === websocket === //
 
+// futuresSDK.websocket.klineCandle('XBTUSDTM_15min');
+
 // futuresSDK.websocket.ticker(['ETHUSDTM', 'XBTUSDTM']);
 
 // futuresSDK.websocket.level2(['ETHUSDTM', 'XBTUSDTM']);
@@ -272,3 +286,5 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.websocket.wallet();
 
 // futuresSDK.websocket.position(['ETHUSDTM', 'LINAUSDTM']);
+
+// futuresSDK.websocket.positionAll();

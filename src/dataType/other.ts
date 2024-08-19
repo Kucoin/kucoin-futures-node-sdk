@@ -1,4 +1,4 @@
-import { PageOffsetParams } from './common';
+import { PageLimitParams, PageOffsetParams } from './common';
 
 export interface FundingHistoryParams extends PageOffsetParams {
   symbol: string;
@@ -7,6 +7,10 @@ export interface FundingHistoryParams extends PageOffsetParams {
 
 export interface FundingRatesParams {
   symbol: string;
-  startAt: string;
-  endAt: string;
+  from: string;
+  to: string;
+}
+
+export interface HistoryPositionsParams extends PageLimitParams {
+  symbol?: string,
 }

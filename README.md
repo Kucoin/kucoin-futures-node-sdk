@@ -26,10 +26,12 @@
       - [Positions](#positions)
       - [Risk Limit Level](#risk-limit-level)
       - [Funding Fees](#funding-fees)
+      - [Trade Fees](#trade-fees)
     - [Market Data](#market-data)
       - [Get Open Contract List](#get-open-contract-list)
       - [Get Order Info of the Contract](#get-order-info-of-the-contract)
       - [Get Ticker](#get-ticker)
+      - [Get Latest Ticker for All Contracts](#get-latest-ticker-for-all-contracts)
       - [Get Full Order Book - Level 2](#get-full-order-book---level-2)
       - [Get Part Order Book - Level 2](#get-part-order-book---level-2)
       - [Transaction History](#transaction-history)
@@ -407,6 +409,12 @@ futuresSDK.futuresMarginOpenOrders('ETHUSDTM', console.log);
 #### Positions
 
 ```js
+// Get Maximum Open Position Size
+futuresSDK.futuresMaxOpenPositionSize({ symbol: 'ETHUSDTM', price: '2200', leverage: 5 }, console.log);
+
+// Get Positions History
+futuresSDK.futuresHistoryPositions({ symbol: 'ETHUSDTM' }, console.log);
+
 // Get Position Details
 futuresSDK.futuresPositionDetail('ETHUSDTM', console.log);
 
@@ -433,6 +441,21 @@ futuresSDK.futuresPositionMargin(
     symbol: 'ETHUSDTM',
     margin: 0.01
     // bizNo: uuidV4(),
+  },
+  console.log
+);
+
+// Get Max Withdraw Margin
+futuresSDK.futuresMaxWithdrawMargin(
+  symbol: 'XBTUSDTM',
+  console.log
+);
+
+// Remove Margin Manually
+futuresSDK.futuresWithdrawMargin(
+  {
+    symbol: 'XBTUSDTM',
+    withdrawAmount: '0.01'
   },
   console.log
 );
@@ -468,6 +491,14 @@ futuresSDK.futuresFundingRates({
 futuresSDK.futuresFundingHistory({ symbol: 'ETHUSDTM' }, console.log);
 ```
 
+#### Trade Fees
+```js
+// Get Trading pair actual fee
+// This interface is for the actual fee rate of the trading pair. The fee rate of your sub-account is the same as that of the master account.
+futuresSDK.futuresTradeFees('XBTUSDTM', console.log)
+
+```
+
 ---
 
 ### Market Data
@@ -489,6 +520,11 @@ futuresSDK.futuresContractDetail('XBTUSDTM', console.log);
 ```js
 futuresSDK.futuresTicker('XBTUSDTM', console.log);
 ```
+
+#### Get Latest Ticker for All Contracts
+```js
+futuresSDK.futuresAllTicker(console.log);
+``` 
 
 #### Get Full Order Book - Level 2
 
@@ -576,7 +612,9 @@ futuresSDK.futuresTradeStatistics(console.log);
 ### Public Channels
 
 ```js
-//
+// Get Kline Candle Data，Topic: /contractMarket/limitCandle:{symbol}_{type}
+futuresSDK.websocket.klineCandle('XBTUSDTM_1hour', console.log);
+
 // Get Real-Time Symbol Ticker v2
 futuresSDK.websocket.tickerV2(['ETHUSDTM', 'XBTUSDTM'], console.log);
 // Or
@@ -639,6 +677,10 @@ futuresSDK.websocket.wallet(console.log);
 // Position Changes Caused by Mark Price
 // subject --> "position.settlement" return Funding Settlement
 futuresSDK.websocket.position(['ETHUSDTM', 'XBTUSDTM']);
+
+// All Position Change Events
+// The subject is the same as the position change events above.
+futuresSDK.websocket.positionAll(console.log);
 ```
 
 ## License

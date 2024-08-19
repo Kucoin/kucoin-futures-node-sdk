@@ -1,5 +1,5 @@
-import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams, MultiOrderBody } from './dataType';
 import { WebSocketClient } from './websocket';
+import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams, MultiOrderBody, HistoryPositionsParams } from './dataType';
 export default class KuCoinFutures {
     private request;
     private socketInstanceCache;
@@ -156,6 +156,17 @@ export default class KuCoinFutures {
         margin: number;
         bizNo?: string | undefined;
     }, callback?: Function) => Promise<any>;
+    futuresMaxWithdrawMargin: (symbol: string, callback?: Function) => Promise<any>;
+    futuresWithdrawMargin: (params: {
+        symbol: string;
+        withdrawAmount: string;
+    }, callback?: Function) => Promise<any>;
+    futuresHistoryPositions: (params: HistoryPositionsParams, callback?: Function) => Promise<any>;
+    futuresMaxOpenPositionSize: (params: {
+        symbol: string;
+        price: string | number;
+        leverage: string | number;
+    }, callback?: Function) => Promise<any>;
     futuresRiskLimit: (symbol?: string, callback?: Function) => Promise<any>;
     futuresChangeRiskLimit: (params: {
         symbol: string;
@@ -176,15 +187,17 @@ export default class KuCoinFutures {
     /**
      * search to stop orders list
      * @param params.symbol -- string symbol
-     * @param params.startAt -- timestamp
-     * @param params.endAt -- timestamp
+     * @param params.from -- Start time (milisecond)
+     * @param params.to -- End time (milisecond)
      * @param callback -- callback function
      */
     futuresFundingRates: (params?: FundingRatesParams, callback?: Function) => Promise<any>;
     futuresFundingRate: (symbol: string, callback?: Function) => Promise<any>;
+    futuresTradeFees: (symbol: string, callback?: Function) => Promise<any>;
     futuresContractsActive: (callback?: Function) => Promise<any>;
     futuresContractDetail: (symbol: string, callback?: Function) => Promise<any>;
     futuresTicker: (symbol: string, callback?: Function) => Promise<any>;
+    futuresAllTicker: (callback?: Function) => Promise<any>;
     futuresLevel2: (symbol: string, callback?: Function) => Promise<any>;
     futuresLevel2Depth20: (symbol: string, callback?: Function) => Promise<any>;
     futuresLevel2Depth100: (symbol: string, callback?: Function) => Promise<any>;
@@ -195,7 +208,7 @@ export default class KuCoinFutures {
      * search to kline
      * @param params.symbol -- string symbol
      * @param params.granularity -- number
-     * @param params.form -- timestamp
+     * @param params.from -- timestamp
      * @param params.to -- boolean
      */
     futuresKline: (params: klineParams, callback?: Function) => Promise<any>;
@@ -241,28 +254,20 @@ export default class KuCoinFutures {
     futuresGetCacheSocketInstance: (isPrivate: boolean) => Promise<WebSocketClient>;
     futuresSocketSubscribe: (topic: string, callback?: Callback, isPrivate?: boolean, strict?: boolean) => Promise<false | undefined>;
     get websocket(): {
-        tickerV2: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        ticker: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        execution: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2Depth5: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        level2Depth50: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        instrument: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        klineCandle: (symbol: string, callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        tickerV2: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        ticker: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        execution: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2Depth5: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        level2Depth50: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        instrument: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
         announcement: (callback?: (d: any) => void) => Promise<false | undefined>;
-        snapshot: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
-        tradeOrders: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        snapshot: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        tradeOrders: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
         advancedOrders: (callback?: (d: any) => void) => Promise<false | undefined>;
         wallet: (callback?: (d: any) => void) => Promise<false | undefined>;
-        position: (symbols: string | [
-        ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        position: (symbols: string | [], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
+        positionAll: (callback?: (d: any) => void) => Promise<false | undefined>;
     };
 }
