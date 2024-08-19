@@ -18,3 +18,9 @@ export interface PageSizeParams {
     pageSize?: number;
     currentPage?: number;
 }
+export interface PageLimitParams {
+    from?: string;
+    to?: string;
+    limit?: number;
+    pageId?: number;
+}

@@ -15,6 +15,7 @@ export const INSTRUMENT = '/contract/instrument';
 export const ANNOUNCEMENT = '/contract/announcement';
 export const SNAPSHOT = '/contractMarket/snapshot';
 export const EXECUTION = '/contractMarket/execution';
+export const KLINE_CANDLE = '/contractMarket/limitCandle';
 
 
 // private socket topic
@@ -22,3 +23,4 @@ export const TRADE_ORDERS = '/contractMarket/tradeOrders';
 export const ADVANCE_ORDERS = '/contractMarket/advancedOrders';
 export const WALLET = '/contractAccount/wallet';
 export const POSITION = '/contract/position';
+export const POSITION_ALL = '/contract/positionAll';

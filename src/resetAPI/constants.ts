@@ -32,6 +32,10 @@ export const FUTURES_POSITION_AUTO_DEPOSIT_STATUS_EP =
   '/api/v1/position/margin/auto-deposit-status';
 export const FUTURES_POSITION_MARGIN_EP =
   '/api/v1/position/margin/deposit-margin';
+export const FUTURES_MAX_WITHDRAW_MARGIN_EP = '/api/v1/margin/maxWithdrawMargin';
+export const FUTURES_WITHDRAW_MARGIN_EP = '/api/v1/margin/withdrawMargin';
+export const FUTURES_HISTORY_POSITIONS_EP = '/api/v1/history-positions';
+export const FUTURES_MAX_OPEN_POSITIONS_EP = '/api/v2/getMaxOpenSize';
 
 // risk limit endpoint
 export const FUTURES_RISK_LIMIT_EP = '/api/v1/contracts/risk-limit';
@@ -42,6 +46,8 @@ export const FUTURES_FUNDING_RATE_EP = '/api/v1/funding-rate';
 export const FUTURES_FUNDING_HISTORY_EP = '/api/v1/funding-history';
 export const FUTURES_FUNDING_RATES_EP = '/api/v1/contract/funding-rates';
 
+// trading fees endpoint
+export const FUTURES_TRADE_FEE_EP = '/api/v1/trade-fees';
 
 // market endpoint
 export const FUTURES_CONTRACTS_ACTIVE_EP = '/api/v1/contracts/active';
@@ -59,3 +65,4 @@ export const FUTURES_TIMESTAMP_EP = '/api/v1/timestamp';
 export const FUTURES_SERVICE_STATUS_EP = '/api/v1/status';
 export const FUTURES_KLINE_EP = '/api/v1/kline/query';
 export const FUTURES_TRADE_STATISTICS_EP = '/api/v1/trade-statistics';
+export const FUTURES_ALL_TICKER_TP = '/api/v1/allTickers';

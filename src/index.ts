@@ -45,9 +45,18 @@ import {
   FUTURES_TRANSFER_LIST_EP,
   FUTURES_ACCOUNT_OVERVIEW_ALL_EP,
   FUTURES_FUNDING_RATES_EP,
-  FUTURES_ORDER_MULTI_EP
+  FUTURES_ORDER_MULTI_EP,
+  FUTURES_MAX_WITHDRAW_MARGIN_EP,
+  FUTURES_WITHDRAW_MARGIN_EP,
+  FUTURES_TRADE_FEE_EP,
+  FUTURES_HISTORY_POSITIONS_EP,
+  FUTURES_MAX_OPEN_POSITIONS_EP,
+  FUTURES_ALL_TICKER_TP
 } from './resetAPI';
 import {
+  WebSocketClient,
+  CONNECT_ID,
+  TICKER_V2,
   PUBLIC_BULLET_EP,
   PRIVATE_BULLET_EP,
   TICKER,
@@ -61,7 +70,9 @@ import {
   SNAPSHOT,
   ADVANCE_ORDERS,
   WALLET,
-  POSITION
+  POSITION,
+  KLINE_CANDLE,
+  POSITION_ALL
 } from './websocket';
 
 import { GET, POST, DELETE } from './tools/constants';
@@ -80,9 +91,9 @@ import {
   klineParams,
   Callback,
   FundingRatesParams,
-  MultiOrderBody
+  MultiOrderBody,
+  HistoryPositionsParams
 } from './dataType';
-import { WebSocketClient, CONNECT_ID, TICKER_V2 } from './websocket';
 
 export default class KuCoinFutures {
   private request: Request;
@@ -424,9 +435,12 @@ export default class KuCoinFutures {
     );
   };
 
-  futuresOrderMulti = async (params: Array<MultiOrderBody>, callback?: Function) => {
+  futuresOrderMulti = async (
+    params: Array<MultiOrderBody>,
+    callback?: Function
+  ) => {
     return this.makeRequest({
-      body: params, 
+      body: params,
       method: POST,
       endpoint: FUTURES_ORDER_MULTI_EP,
       callback
@@ -616,6 +630,60 @@ export default class KuCoinFutures {
     });
   };
 
+  futuresMaxWithdrawMargin = async (symbol: string, callback?: Function) => {
+    return this.makeRequest({
+      body: { symbol },
+      method: GET,
+      endpoint: FUTURES_MAX_WITHDRAW_MARGIN_EP,
+      callback
+    });
+  };
+
+  futuresWithdrawMargin = async (
+    params: {
+      symbol: string;
+      withdrawAmount: string;
+    },
+    callback?: Function
+  ) => {
+    const { symbol, withdrawAmount } = params;
+    return this.makeRequest({
+      body: { symbol, withdrawAmount },
+      method: POST,
+      endpoint: FUTURES_WITHDRAW_MARGIN_EP,
+      callback
+    });
+  };
+
+  futuresHistoryPositions = async (
+    params: HistoryPositionsParams,
+    callback?: Function
+  ) => {
+    return this.makeRequest({
+      body: params,
+      method: GET,
+      endpoint: FUTURES_HISTORY_POSITIONS_EP,
+      callback
+    });
+  };
+
+  futuresMaxOpenPositionSize = async (
+    params: {
+      symbol: string;
+      price: string | number;
+      leverage: string | number;
+    },
+    callback?: Function
+  ) => {
+    const { symbol, price, leverage } = params;
+    return this.makeRequest({
+      body: { symbol, price, leverage },
+      method: GET,
+      endpoint: FUTURES_MAX_OPEN_POSITIONS_EP,
+      callback
+    });
+  };
+
   futuresRiskLimit = async (symbol?: string, callback?: Function) => {
     return this.makeRequest({
       body: symbol,
@@ -666,8 +734,8 @@ export default class KuCoinFutures {
   /**
    * search to stop orders list
    * @param params.symbol -- string symbol
-   * @param params.startAt -- timestamp
-   * @param params.endAt -- timestamp
+   * @param params.from -- Start time (milisecond)
+   * @param params.to -- End time (milisecond)
    * @param callback -- callback function
    */
   futuresFundingRates = async (
@@ -689,6 +757,15 @@ export default class KuCoinFutures {
       endpoint: `${FUTURES_FUNDING_RATE_EP}/${symbol}/current`,
       callback,
       isPrivate: false
+    });
+  };
+
+  futuresTradeFees = async (symbol: string, callback?: Function) => {
+    return this.makeRequest({
+      body: { symbol },
+      method: GET,
+      endpoint: FUTURES_TRADE_FEE_EP,
+      callback
     });
   };
 
@@ -720,7 +797,17 @@ export default class KuCoinFutures {
       body: { symbol },
       method: GET,
       endpoint: FUTURES_TICKER_EP,
-      callback
+      callback,
+      isPrivate: false
+    });
+  };
+
+  futuresAllTicker = async (callback?: Function) => {
+    return this.makeRequest({
+      method: GET,
+      endpoint: FUTURES_ALL_TICKER_TP,
+      callback,
+      isPrivate: false
     });
   };
 
@@ -786,7 +873,7 @@ export default class KuCoinFutures {
    * search to kline
    * @param params.symbol -- string symbol
    * @param params.granularity -- number
-   * @param params.form -- timestamp
+   * @param params.from -- timestamp
    * @param params.to -- boolean
    */
   futuresKline = async (params: klineParams, callback?: Function) => {
@@ -963,6 +1050,9 @@ export default class KuCoinFutures {
     }
 
     /* === public socket === */
+    async function klineCandle(symbol: string, callback = log) {
+      return await makeSubscribe(symbol, KLINE_CANDLE, callback);
+    }
     async function tickerV2(symbols: string | [], callback = log) {
       return await makeSubscribe(symbols, TICKER_V2, callback);
     }
@@ -1016,7 +1106,12 @@ export default class KuCoinFutures {
       return await makeSubscribe(symbols, POSITION, callback, true);
     }
 
+    async function positionAll(callback = log) {
+      return await _this.futuresSocketSubscribe(POSITION_ALL, callback, true);
+    }
+
     return {
+      klineCandle,
       tickerV2,
       ticker,
       level2,
@@ -1029,7 +1124,8 @@ export default class KuCoinFutures {
       tradeOrders,
       advancedOrders,
       wallet,
-      position
+      position,
+      positionAll
     };
   }
 }

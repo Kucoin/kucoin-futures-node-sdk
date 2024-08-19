@@ -2,9 +2,13 @@ const KuCoinFutures = require('../lib/index').default;
 // const { v4: uuidV4 } = require('uuid');
 
 const futuresSDK = new KuCoinFutures({
-  key: '[Your key]',
-  secret: '[Your secret]',
-  passphrase: '[Your passphrase]'
+  key: '66c2e29e08268b000192f78e', // KC-API-KEY
+  secret: '249c5d2e-8bc8-4b90-ab45-0e21daf01284', // API-Secret
+  passphrase: '123456789Qq', // KC-API-PASSPHRASE
+  axiosProps: {
+    version: '2',
+    env: 'prod'
+  }
 });
 
 futuresSDK.futuresTimestamp(console.log);
@@ -200,6 +204,14 @@ futuresSDK.futuresStatus(console.log);
 //   console.log
 // );
 
+// futuresSDK.futuresMaxWithdrawMargin('DOTUSDTM', console.log);
+
+// futuresSDK.futuresWithdrawMargin({ symbol: 'DOTUSDTM', withdrawAmount: '0.009' }, console.log);
+
+// futuresSDK.futuresHistoryPositions({ symbol: 'ETHUSDTM' }, console.log);
+
+// futuresSDK.futuresMaxOpenPositionSize({ symbol: 'ETHUSDTM', price: '2200', leverage: 5 }, console.log);
+
 // futuresSDK.futuresRiskLimit('ETHUSDTM', console.log);
 
 // futuresSDK.futuresChangeRiskLimit(
@@ -216,6 +228,8 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresContractDetail('XBTUSDTM', console.log);
 
 // futuresSDK.futuresTicker('XBTUSDTM', console.log);
+
+// futuresSDK.futuresAllTicker(console.log);
 
 // futuresSDK.futuresLevel2('XBTUSDTM', console.log);
 
@@ -234,6 +248,8 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresPremiums({ symbol: '.XBTUSDMPI' }, console.log);
 
 // futuresSDK.futuresFundingRate('XBTUSDM', console.log);
+
+// futuresSDK.futuresTradeFees('XBTUSDTM', console.log);
 
 // futuresSDK.futuresKline(
 //   {
@@ -255,6 +271,8 @@ futuresSDK.futuresStatus(console.log);
 
 // === websocket === //
 
+// futuresSDK.websocket.klineCandle('XBTUSDTM_15min');
+
 // futuresSDK.websocket.ticker(['ETHUSDTM', 'XBTUSDTM']);
 
 // futuresSDK.websocket.level2(['ETHUSDTM', 'XBTUSDTM']);
@@ -272,3 +290,5 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.websocket.wallet();
 
 // futuresSDK.websocket.position(['ETHUSDTM', 'LINAUSDTM']);
+
+// futuresSDK.websocket.positionAll();
