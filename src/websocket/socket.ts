@@ -9,12 +9,13 @@ export default class WebSocketClient {
   private messageHandler: any[] = [];
   private heartbeatInterval: NodeJS.Timeout | null = null;
   private pingTimeout: NodeJS.Timeout | null = null;
+  private subscribeMap: { [key: string]: Boolean };
   public subscriptions: Subscription[] = [];
 
   constructor(url: string, websocket: WebSocket) {
     this.ws = websocket;
     this._url = url;
-
+    this.subscribeMap = {};
     this.setupWebSocket();
   }
 
@@ -129,14 +130,20 @@ export default class WebSocketClient {
 
   // resubscribe
   resubscribe(): void {
+    this.subscribeMap = {};
     this.subscriptions.forEach(({ id, topic, privateChannel }) => {
-      this.socketSend({
-        id,
-        type: 'subscribe',
-        topic,
-        privateChannel,
-        response: true
-      });
+      if (!this.subscribeMap[`${topic}_${privateChannel}`]) {
+        this.socketSend({
+          id,
+          type: 'subscribe',
+          topic,
+          privateChannel,
+          response: true
+        });
+        this.subscribeMap[`${topic}_${privateChannel}`] = true;
+      }else{
+        console.log(`Subscribe Topic:${topic} privateChannel:${privateChannel} repeat`)
+      }
     });
   }
 

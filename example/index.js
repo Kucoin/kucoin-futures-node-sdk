@@ -2,13 +2,9 @@ const KuCoinFutures = require('../lib/index').default;
 // const { v4: uuidV4 } = require('uuid');
 
 const futuresSDK = new KuCoinFutures({
-  key: '66c2e29e08268b000192f78e', // KC-API-KEY
-  secret: '249c5d2e-8bc8-4b90-ab45-0e21daf01284', // API-Secret
-  passphrase: '123456789Qq', // KC-API-PASSPHRASE
-  axiosProps: {
-    version: '2',
-    env: 'prod'
-  }
+  key: '[Your key]',
+  secret: '[Your secret]',
+  passphrase: '[Your passphrase]'
 });
 
 futuresSDK.futuresTimestamp(console.log);
