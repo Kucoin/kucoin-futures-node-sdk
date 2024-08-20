@@ -15,7 +15,7 @@
     "axios": "1.4.0",
     "lodash": "4.17.21",
     "uuid": "9.0.0",
-    "ws": "8.13.0"
+    "ws": "8.17.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",
