@@ -239,11 +239,11 @@ futuresSDK.futuresStatus(console.log);
 
 // futuresSDK.futuresIndexList({ symbol: '.KXBT' }, console.log);
 
-// futuresSDK.futuresMarkPrice('XBTUSDM', console.log);
+// futuresSDK.futuresMarkPrice('XBTUSDTM', console.log);
 
-// futuresSDK.futuresPremiums({ symbol: '.XBTUSDMPI' }, console.log);
+// futuresSDK.futuresPremiums({ symbol: '.XBTUSDTMPI' }, console.log);
 
-// futuresSDK.futuresFundingRate('XBTUSDM', console.log);
+// futuresSDK.futuresFundingRate('XBTUSDTM', console.log);
 
 // futuresSDK.futuresTradeFees('XBTUSDTM', console.log);
 

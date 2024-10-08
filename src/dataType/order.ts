@@ -2,6 +2,9 @@ import { PageSizeParams } from './common';
 
 export type BaseOrderType = 'limit' | 'market';
 export type OrderType = 'limit' | 'market' | 'limit_stop' | 'market_stop';
+export type TriggerType = 'TP' | 'IP' | 'MP';
+export type STPType = 'CN' | 'CO' | 'CB';
+export type TimeInForceType = 'GTC' | 'IOC';
 
 export type OrderOptionalParamsType =
   | 'type'
@@ -76,4 +79,27 @@ export interface FillsParams extends PageSizeParams {
   symbol?: string;
   side?: string;
   type?: OrderType;
+}
+
+export interface StpOrderParams {
+  clientOid: string;
+  side: string;
+  symbol: string;
+  leverage: string;
+  type?: string;
+  remark?: string;
+  triggerStopUpPrice?: string;
+  stopPriceType?: TriggerType;
+  triggerStopDownPrice?: string;
+  reduceOnly?: boolean;
+  closeOrder?: boolean;
+  forceHold?: boolean;
+  stp?: STPType;
+  price?: number | string;
+  size?: number;
+  timeInForce?: TimeInForceType;
+  postOnly?: boolean;
+  hidden?: boolean;
+  iceberg?: boolean;
+  visibleSize?: number | string;
 }
