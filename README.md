@@ -22,6 +22,7 @@
       - [Orders](#orders)
         - [Place Order Test](#place-order-test)
         - [Place Multiple Orders](#place-multiple-orders)
+        - [Place take profit and stop loss order](#place-take-profit-and-stop-loss-order)
       - [Fills](#fills)
       - [Positions](#positions)
       - [Risk Limit Level](#risk-limit-level)
@@ -390,6 +391,43 @@ futuresSDK.futuresOrderMulti([...], console.log);
 ```
 
 
+##### Place take profit and stop loss order
+```js
+//request
+{
+  "clientOid": "5c52e11203aa677f33e493fb",
+  "reduceOnly": false,
+  "closeOrder": false,
+  "forceHold": false,
+  "hidden": false,
+  "iceberg": false,
+  "leverage": 20,
+  "postOnly": false,
+  "price": 8000,
+  "remark": "remark",
+  "side": "buy",
+  "size": 20,"stopPriceType": "",
+  "symbol": "XBTUSDM",
+  "timeInForce": "",
+  "type": "limit",
+  "visibleSize": 0,
+  "marginMode": "ISOLATED"
+  "triggerStopUpPrice": 9000, 	//take profit price
+  "triggerStopDownPrice": 7000  //stop loss price
+}
+
+//Response
+{
+	"code": "200000",
+	"data": {
+		"orderId": "5bd6e9286d99522a52e458de",
+		"clientOid": "5c52e11203aa677f33e493fb"
+	}
+}
+
+futuresSDK.futuresOrderStp(params, console.log);
+```
+
 
 #### Fills
 
@@ -478,7 +516,7 @@ futuresSDK.futuresChangeRiskLimit(
 
 ```js
 // Get Current Funding Rate
-futuresSDK.futuresFundingRate('XBTUSDM', console.log);
+futuresSDK.futuresFundingRate('XBTUSDTM', console.log);
 
 // Get Public Funding History
 futuresSDK.futuresFundingRates({ 
@@ -558,10 +596,10 @@ futuresSDK.futuresInterests({ symbol: '.XBTINT' }, console.log);
 futuresSDK.futuresIndexList({ symbol: '.KXBT' }, console.log);
 
 // Get Current Mark Price
-futuresSDK.futuresMarkPrice('XBTUSDM', console.log);
+futuresSDK.futuresMarkPrice('XBTUSDTM', console.log);
 
 // Get Premium Index
-futuresSDK.futuresPremiums({ symbol: '.XBTUSDMPI' }, console.log);
+futuresSDK.futuresPremiums({ symbol: '.XBTUSDTMPI' }, console.log);
 ```
 
 #### Server Time

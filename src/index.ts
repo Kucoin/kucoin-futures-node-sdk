@@ -51,7 +51,8 @@ import {
   FUTURES_TRADE_FEE_EP,
   FUTURES_HISTORY_POSITIONS_EP,
   FUTURES_MAX_OPEN_POSITIONS_EP,
-  FUTURES_ALL_TICKER_TP
+  FUTURES_ALL_TICKER_TP,
+  FUTURES_ORDER_STP_EP
 } from './resetAPI';
 import {
   WebSocketClient,
@@ -92,7 +93,8 @@ import {
   Callback,
   FundingRatesParams,
   MultiOrderBody,
-  HistoryPositionsParams
+  HistoryPositionsParams,
+  StpOrderParams
 } from './dataType';
 
 export default class KuCoinFutures {
@@ -443,6 +445,18 @@ export default class KuCoinFutures {
       body: params,
       method: POST,
       endpoint: FUTURES_ORDER_MULTI_EP,
+      callback
+    });
+  };
+
+  futuresOrderStp = async (
+    params: StpOrderParams,
+    callback?: Function
+  ) => {
+    return this.makeRequest({
+      body: params,
+      method: POST,
+      endpoint: FUTURES_ORDER_STP_EP,
       callback
     });
   };

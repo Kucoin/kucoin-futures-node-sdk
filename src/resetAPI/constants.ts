@@ -18,6 +18,7 @@ export const FUTURES_RECENT_DONE_ORDERS_EP = '/api/v1/recentDoneOrders';
 export const FUTURES_ORDER_CLIENT_ORDER_EP = '/api/v1/orders/client-order';
 export const FUTURES_ORDER_TEST_EP  = '/api/v1/orders/test';
 export const FUTURES_ORDER_MULTI_EP = '/api/v1/orders/multi';
+export const FUTURES_ORDER_STP_EP = '/api/v1/st-orders';
 
 // fills endpoint
 export const FUTURES_FILLS_EP = '/api/v1/fills';
