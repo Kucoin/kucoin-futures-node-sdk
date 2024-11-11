@@ -1,6 +1,6 @@
 {
   "name": "kucoin-futures-node-sdk",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "KuCoin Futures API SDK for Node.js language",
   "main": "lib/index.js",
   "license": "MIT",

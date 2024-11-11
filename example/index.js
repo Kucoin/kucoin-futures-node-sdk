@@ -131,6 +131,8 @@ futuresSDK.futuresStatus(console.log);
 //   console.log
 // );
 
+// futuresSDK.futuresMultiCancelOrder({ orderIdsList: ['orderid'] });
+
 // futuresSDK.futuresTransactionHistory(
 //   {
 //     startTime: new Date().getTime() - 7 * 24 * 60 * 60 * 1000,
@@ -207,6 +209,14 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.futuresHistoryPositions({ symbol: 'ETHUSDTM' }, console.log);
 
 // futuresSDK.futuresMaxOpenPositionSize({ symbol: 'ETHUSDTM', price: '2200', leverage: 5 }, console.log);
+
+// futuresSDK.futuresGetMarginMode({ symbol: 'XBTUSDTM' }, console.log);
+
+// futuresSDK.futuresChangeMarginMode({ symbol: 'XBTUSDTM', marginMode: 'CROSS' }, console.log);
+
+// futuresSDK.futuresGetCrossUserLeverage({ symbol: 'XBTUSDTM' }, console.log);
+
+// futuresSDK.futuresChangeCrossUserLeverage({ symbol: 'XBTUSDTM', leverage: '5' }, console.log);
 
 // futuresSDK.futuresRiskLimit('ETHUSDTM', console.log);
 
@@ -288,3 +298,7 @@ futuresSDK.futuresStatus(console.log);
 // futuresSDK.websocket.position(['ETHUSDTM', 'LINAUSDTM']);
 
 // futuresSDK.websocket.positionAll();
+
+// futuresSDK.websocket.marginMode();
+
+// futuresSDK.websocket.crossLeverage();

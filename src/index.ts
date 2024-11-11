@@ -52,7 +52,12 @@ import {
   FUTURES_HISTORY_POSITIONS_EP,
   FUTURES_MAX_OPEN_POSITIONS_EP,
   FUTURES_ALL_TICKER_TP,
-  FUTURES_ORDER_STP_EP
+  FUTURES_ORDER_STP_EP,
+  FUTURES_ORDER_MULTI_CANCEL_EP,
+  FUTURES_GET_MARGIN_MODE_EP,
+  FUTURES_CHANGE_MARGIN_MODE_EP,
+  FUTURES_GET_CROSS_LEVERAGE_EP,
+  FUTURES_CHANGE_CROSS_LEVERAGE_EP,
 } from './resetAPI';
 import {
   WebSocketClient,
@@ -73,7 +78,9 @@ import {
   WALLET,
   POSITION,
   KLINE_CANDLE,
-  POSITION_ALL
+  POSITION_ALL,
+  MARGIN_MODE,
+  CROSS_LEVERAGE,
 } from './websocket';
 
 import { GET, POST, DELETE } from './tools/constants';
@@ -94,7 +101,8 @@ import {
   FundingRatesParams,
   MultiOrderBody,
   HistoryPositionsParams,
-  StpOrderParams
+  StpOrderParams,
+  OrderMultiCancel
 } from './dataType';
 
 export default class KuCoinFutures {
@@ -449,10 +457,7 @@ export default class KuCoinFutures {
     });
   };
 
-  futuresOrderStp = async (
-    params: StpOrderParams,
-    callback?: Function
-  ) => {
+  futuresOrderStp = async (params: StpOrderParams, callback?: Function) => {
     return this.makeRequest({
       body: params,
       method: POST,
@@ -494,6 +499,18 @@ export default class KuCoinFutures {
       body: '',
       method: DELETE,
       endpoint: `${FUTURES_ORDER_CLIENT_ORDER_EP}/${clientOid}?symbol=${symbol}`,
+      callback
+    });
+  };
+
+  futuresMultiCancelOrder = async (
+    params: OrderMultiCancel,
+    callback?: Function
+  ) => {
+    return this.makeRequest({
+      body: params || '',
+      method: DELETE,
+      endpoint: FUTURES_ORDER_MULTI_CANCEL_EP,
       callback
     });
   };
@@ -694,6 +711,68 @@ export default class KuCoinFutures {
       body: { symbol, price, leverage },
       method: GET,
       endpoint: FUTURES_MAX_OPEN_POSITIONS_EP,
+      callback
+    });
+  };
+
+  futuresGetMarginMode = async (
+    params: {
+      symbol: string;
+    },
+    callback?: Function
+  ) => {
+    const { symbol } = params;
+    return this.makeRequest({
+      body: { symbol },
+      method: GET,
+      endpoint: FUTURES_GET_MARGIN_MODE_EP,
+      callback
+    });
+  };
+
+  futuresChangeMarginMode = async (
+    params: {
+      symbol: string;
+      marginMode: string;
+    },
+    callback?: Function
+  ) => {
+    const { symbol, marginMode } = params;
+    return this.makeRequest({
+      body: { symbol, marginMode },
+      method: POST,
+      endpoint: FUTURES_CHANGE_MARGIN_MODE_EP,
+      callback
+    });
+  };
+
+  futuresGetCrossUserLeverage = async (
+    params: {
+      symbol: string;
+    },
+    callback?: Function
+  ) => {
+    const { symbol } = params;
+    return this.makeRequest({
+      body: { symbol },
+      method: GET,
+      endpoint: FUTURES_GET_CROSS_LEVERAGE_EP,
+      callback
+    });
+  };
+
+  futuresChangeCrossUserLeverage = async (
+    params: {
+      symbol: string;
+      leverage: string;
+    },
+    callback?: Function
+  ) => {
+    const { symbol, leverage } = params;
+    return this.makeRequest({
+      body: { symbol, leverage },
+      method: POST,
+      endpoint: FUTURES_CHANGE_CROSS_LEVERAGE_EP,
       callback
     });
   };
@@ -1124,6 +1203,14 @@ export default class KuCoinFutures {
       return await _this.futuresSocketSubscribe(POSITION_ALL, callback, true);
     }
 
+    async function marginMode(callback = log) {
+      return await _this.futuresSocketSubscribe(MARGIN_MODE, callback, true);
+    }
+
+    async function crossLeverage(callback = log) {
+      return await _this.futuresSocketSubscribe(CROSS_LEVERAGE, callback, true);
+    }
+
     return {
       klineCandle,
       tickerV2,
@@ -1139,7 +1226,9 @@ export default class KuCoinFutures {
       advancedOrders,
       wallet,
       position,
-      positionAll
+      positionAll,
+      marginMode,
+      crossLeverage,
     };
   }
 }

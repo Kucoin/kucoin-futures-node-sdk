@@ -19,6 +19,7 @@ export const FUTURES_ORDER_CLIENT_ORDER_EP = '/api/v1/orders/client-order';
 export const FUTURES_ORDER_TEST_EP  = '/api/v1/orders/test';
 export const FUTURES_ORDER_MULTI_EP = '/api/v1/orders/multi';
 export const FUTURES_ORDER_STP_EP = '/api/v1/st-orders';
+export const FUTURES_ORDER_MULTI_CANCEL_EP = '/api/v1/orders/multi-cancel';
 
 // fills endpoint
 export const FUTURES_FILLS_EP = '/api/v1/fills';
@@ -37,6 +38,11 @@ export const FUTURES_MAX_WITHDRAW_MARGIN_EP = '/api/v1/margin/maxWithdrawMargin'
 export const FUTURES_WITHDRAW_MARGIN_EP = '/api/v1/margin/withdrawMargin';
 export const FUTURES_HISTORY_POSITIONS_EP = '/api/v1/history-positions';
 export const FUTURES_MAX_OPEN_POSITIONS_EP = '/api/v2/getMaxOpenSize';
+// cross
+export const FUTURES_GET_MARGIN_MODE_EP = '/api/v2/position/getMarginMode';
+export const FUTURES_CHANGE_MARGIN_MODE_EP = '/api/v2/position/changeMarginMode';
+export const FUTURES_GET_CROSS_LEVERAGE_EP = '/api/v2/getCrossUserLeverage';
+export const FUTURES_CHANGE_CROSS_LEVERAGE_EP = '/api/v2/changeCrossUserLeverage';
 
 // risk limit endpoint
 export const FUTURES_RISK_LIMIT_EP = '/api/v1/contracts/risk-limit';

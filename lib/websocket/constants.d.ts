@@ -16,3 +16,5 @@ export declare const ADVANCE_ORDERS = "/contractMarket/advancedOrders";
 export declare const WALLET = "/contractAccount/wallet";
 export declare const POSITION = "/contract/position";
 export declare const POSITION_ALL = "/contract/positionAll";
+export declare const MARGIN_MODE = "/contract/marginMode";
+export declare const CROSS_LEVERAGE = "/contract/crossLeverage";
