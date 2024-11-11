@@ -23,8 +23,13 @@
         - [Place Order Test](#place-order-test)
         - [Place Multiple Orders](#place-multiple-orders)
         - [Place take profit and stop loss order](#place-take-profit-and-stop-loss-order)
+        - [Batch cancel Orders](#batch-cancel-orders)
       - [Fills](#fills)
       - [Positions](#positions)
+        - [Get Margin Mode](#get-margin-mode)
+        - [Modify Margin Mode](#modify-margin-mode)
+        - [Get Cross Margin Leverage](#get-cross-margin-leverage)
+        - [Modify Cross Margin Leverage](#modify-cross-margin-leverage)
       - [Risk Limit Level](#risk-limit-level)
       - [Funding Fees](#funding-fees)
       - [Trade Fees](#trade-fees)
@@ -428,6 +433,58 @@ futuresSDK.futuresOrderMulti([...], console.log);
 futuresSDK.futuresOrderStp(params, console.log);
 ```
 
+##### Batch cancel Orders
+
+| Param          | Type   | Mandatory | Description                                                                    |
+|----------------|--------|-----------|--------------------------------------------------------------------------------|
+| symbol         | String | No        | symbol, this parameter is required when using clientOidsList to cancel orders. |
+| orderIdsList   | String | No        | Choose one of orderIdsList and clientOidsList                                  |
+| clientOidsList | String | No        | Choose one of orderIdsList and clientOidsList                                  |   
+```js
+//Request
+{
+  "orderIdsList":
+   [
+      "80465574458560512",
+      "80465575289094144"
+   ],
+  "clientOidsList":
+   [
+      {
+        "symbol": "XBTUSDTM",
+        "clientOid": "clientOid123"
+      },
+      {
+        "symbol": "ETHUSDTM",
+        "clientOid": "clientOid321"
+      }
+    ]
+}
+
+//Response
+{
+    "code": "200000",
+    "data":
+    [
+      {
+        "orderId": "80465574458560512",
+        "clientOid": null,
+        "code": "200",
+        "msg": "success"
+      },
+      {
+        "orderId": "80465575289094144",
+        "clientOid": null,
+        "code": "200",
+        "msg": "success"
+      }
+    ]
+}
+
+futuresSDK.futuresMultiCancelOrder(params, console.log);
+```
+
+
 
 #### Fills
 
@@ -497,6 +554,100 @@ futuresSDK.futuresWithdrawMargin(
   },
   console.log
 );
+```
+
+##### Get Margin Mode
+PARAMETERS
+| Param  | Type   | Mandatory | Description            |
+|--------|--------|-----------|------------------------|
+| symbol | String | Yes       | Symbol of the contract |
+
+RESPONSES
+| Param      | Description                                             |
+|------------|---------------------------------------------------------|
+| symbol     | Symbol of the contract                                  |
+| marginMode | Margin mode: ISOLATED (isolated), CROSS (cross margin). |
+
+
+```js
+{
+  "symbol":"XBTUSDTM", // symbol
+  "marginMode":"CROSS" // Margin mode: ISOLATED (isolated), CROSS (cross margin).
+}
+
+futuresSDK.futuresGetMarginMode({ symbol: 'ETHUSDTM' }, console.log);
+```
+
+##### Modify Margin Mode
+PARAMETERS
+| Param      | Type   | Mandatory | Description                                                       |
+|------------|--------|-----------|-------------------------------------------------------------------|
+| symbol     | String | Yes       | Symbol of the contract                                            |
+| marginMode | String | Yes       | Modified margin model: ISOLATED (isolated), CROSS (cross margin). |
+
+RESPONSES
+| Param      | Description                                             |
+|------------|---------------------------------------------------------|
+| symbol     | Symbol of the contract                                  |
+| marginMode | Margin mode: ISOLATED (isolated), CROSS (cross margin). |
+
+
+```js
+// request body
+{ 
+  "symbol":"XBTUSDTM", // symbol
+  "marginMode":"CROSS" // Margin mode: ISOLATED (isolated), CROSS (cross margin).
+}
+
+// response body
+{
+  "symbol":"XBTUSDTM", // symbol
+  "marginMode":"CROSS" // Modified margin model:ISOLATED (isolated), CROSS (cross margin).
+}
+
+futuresSDK.futuresChangeMarginMode({ symbol: 'ETHUSDTM', marginMode: 'CROSS' }, console.log);
+```
+
+##### Get Cross Margin Leverage
+PARAMETERS
+| Param  | Type   | Mandatory | Description            |
+|--------|--------|-----------|------------------------|
+| symbol | String | Yes       | Symbol of the contract |
+
+RESPONSES
+| Param                       |   Description            |
+|-----------------------------|--------------------------|
+| symbol                      |   Symbol of the contract |
+| leverage                    |   Leverage multiple      |
+
+```js
+{
+  "symbol":"XBTUSDTM", // symbol
+  "leverage":"3.00"    // Leverage multiple
+}
+
+futuresSDK.futuresGetCrossUserLeverage({ symbol: 'XBTUSDTM' }, console.log)
+```
+
+##### Modify Cross Margin Leverage
+PARAMETERS
+| Param    | Type   | Mandatory | Description            |
+|----------|--------|-----------|------------------------|
+| symbol   | String | Yes       | Symbol of the contract |
+| leverage | String | Yes       | Leverage multiple      |
+
+RESPONSES
+| Param                       |   Description            |
+|-----------------------------|--------------------------|
+| data                        |   Whether successful     |
+
+```js
+{
+  "symbol":"XBTUSDTM", // symbol
+  "leverage":"3.00"    // Leverage multiple
+}
+
+futuresSDK.futuresChangeCrossUserLeverage({ symbol: 'XBTUSDTM', leverage: 3 }, console.log)
 ```
 
 #### Risk Limit Level
@@ -719,6 +870,33 @@ futuresSDK.websocket.position(['ETHUSDTM', 'XBTUSDTM']);
 // All Position Change Events
 // The subject is the same as the position change events above.
 futuresSDK.websocket.positionAll(console.log);
+
+// {
+//     "topic": "/contract/marginMode",
+//     "type": "message",
+//     "subject": "user.config",
+//     "userId": "6687a53f5bda600012b84bf",
+//     "channelType": "private",
+//     "data": {
+//         "ANTUSDTM": "CROSS"
+//     }
+// }
+futuresSDK.websocket.marginMode(console.log);
+
+// {
+//     "topic": "/contract/crossLeverage",
+//     "type": "message",
+//     "subject": "user.config",
+//     "userId": "6687a53f5bda600001284bf",
+//     "channelType": "private",
+//     "data": {
+//         "ANTUSDTM": {
+//             "leverage": 5
+//         }
+//     }
+// }
+futuresSDK.websocket.crossLeverage(console.log);
+
 ```
 
 ## License

@@ -103,3 +103,9 @@ export interface StpOrderParams {
   iceberg?: boolean;
   visibleSize?: number | string;
 }
+
+export interface OrderMultiCancel {
+  symbol?: string;
+  orderIdsList?: Array<string>;
+  clientOidsList?: Array<string>;
+}

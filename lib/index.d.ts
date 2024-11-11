@@ -1,5 +1,5 @@
 import { WebSocketClient } from './websocket';
-import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams, MultiOrderBody, HistoryPositionsParams, StpOrderParams } from './dataType';
+import { CreateSubApiParams, FillsParams, FundingHistoryParams, OpenOrderListParams, StopOrderListParams, TransactionHistoryParams, TransferListParams, UpdateSubApiParams, IndexListParams, klineParams, Callback, FundingRatesParams, MultiOrderBody, HistoryPositionsParams, StpOrderParams, OrderMultiCancel } from './dataType';
 export default class KuCoinFutures {
     private request;
     private socketInstanceCache;
@@ -99,6 +99,7 @@ export default class KuCoinFutures {
     futuresCancelAllStopOrders: (symbol?: string, callback?: Function) => Promise<any>;
     futuresCancelAll: (symbol?: string, callback?: Function) => Promise<[any, any]>;
     futuresCancelOrderByClientOid: (symbol: string, clientOid: string, callback?: Function) => Promise<any>;
+    futuresMultiCancelOrder: (params: OrderMultiCancel, callback?: Function) => Promise<any>;
     /**
      * search to open orders list
      * @param params.status --'active'|'done' default 'active'
@@ -167,6 +168,20 @@ export default class KuCoinFutures {
         symbol: string;
         price: string | number;
         leverage: string | number;
+    }, callback?: Function) => Promise<any>;
+    futuresGetMarginMode: (params: {
+        symbol: string;
+    }, callback?: Function) => Promise<any>;
+    futuresChangeMarginMode: (params: {
+        symbol: string;
+        marginMode: string;
+    }, callback?: Function) => Promise<any>;
+    futuresGetCrossUserLeverage: (params: {
+        symbol: string;
+    }, callback?: Function) => Promise<any>;
+    futuresChangeCrossUserLeverage: (params: {
+        symbol: string;
+        leverage: string;
     }, callback?: Function) => Promise<any>;
     futuresRiskLimit: (symbol?: string, callback?: Function) => Promise<any>;
     futuresChangeRiskLimit: (params: {
@@ -280,5 +295,7 @@ export default class KuCoinFutures {
         position: (symbols: string | [
         ], callback?: (d: any) => void) => Promise<false | (false | undefined)[] | undefined>;
         positionAll: (callback?: (d: any) => void) => Promise<false | undefined>;
+        marginMode: (callback?: (d: any) => void) => Promise<false | undefined>;
+        crossLeverage: (callback?: (d: any) => void) => Promise<false | undefined>;
     };
 }

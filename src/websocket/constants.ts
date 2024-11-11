@@ -24,3 +24,5 @@ export const ADVANCE_ORDERS = '/contractMarket/advancedOrders';
 export const WALLET = '/contractAccount/wallet';
 export const POSITION = '/contract/position';
 export const POSITION_ALL = '/contract/positionAll';
+export const MARGIN_MODE = '/contract/marginMode';
+export const CROSS_LEVERAGE = '/contract/crossLeverage';
